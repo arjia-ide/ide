@@ -11,7 +11,7 @@ import MainWrap from "./mainWrap";
 import {IntlProvider} from 'react-intl';
 import {Provider} from "react-redux";
 import {configureStore} from "./store";
-import {BrowserRouter as Router} from "react-router-dom";
+import {HashRouter as Router} from "react-router-dom";
 
 class App extends Component {
 
