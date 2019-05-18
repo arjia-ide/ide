@@ -160,8 +160,6 @@ export default class WalletMenu extends React.Component<any, any> {
                             icon: "key",
                           })
                       } />
-
-          };
             <MenuDivider />
             <MenuItem icon="folder-open" text="Open Wallet" disabled={this.isExtension()}>
               {
