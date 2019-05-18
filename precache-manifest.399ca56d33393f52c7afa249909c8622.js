@@ -4,12 +4,12 @@ self.__precacheManifest = [
     "url": "https://arjia.city/static/js/0.b5d9f3ce.chunk.js"
   },
   {
-    "revision": "d96df4e3d0e81ef0efb3",
+    "revision": "adc56022b1a79a91d53c",
     "url": "https://arjia.city/static/css/main.40a511f7.chunk.css"
   },
   {
-    "revision": "d96df4e3d0e81ef0efb3",
-    "url": "https://arjia.city/static/js/main.d96df4e3.chunk.js"
+    "revision": "adc56022b1a79a91d53c",
+    "url": "https://arjia.city/static/js/main.adc56022.chunk.js"
   },
   {
     "revision": "bf18fbc1dd636c940d87",
@@ -303,7 +303,7 @@ self.__precacheManifest = [
     "url": "https://arjia.city/f1a03b9ade39f719cc616811c7df4393.js"
   },
   {
-    "revision": "1a73265a527ddef6e7048d066f6996a7",
+    "revision": "926188923a42c24eb729ecb4c9bf862e",
     "url": "https://arjia.city/index.html"
   }
 ];
