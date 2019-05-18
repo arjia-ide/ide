@@ -7,7 +7,7 @@ import {Intent} from "@blueprintjs/core/lib/esm/common/intent";
 
 export function AsciiFunc() {
 
-  const [base58, setBase58] = useState("");
+  const [ascii, setAscii] = useState("");
   const [toValue, setTo] = useState("");
 
   return (
@@ -27,10 +27,10 @@ export function AsciiFunc() {
               style={styles.inputTextArea}
               intent={Intent.PRIMARY}
               onChange={ev => {
-                setBase58(ev.target.value);
+                setAscii(ev.target.value);
                 setTo(Try(() => TronWeb.toAscii(ev.target.value), ""));
               }}
-              value={base58}
+              value={ascii}
             />
           </FormGroup>
         </div>
@@ -46,7 +46,7 @@ export function AsciiFunc() {
               placeholder=""
               value={toValue}
               onChange={ev => {
-                setBase58(Try(() => TronWeb.fromAscii(ev.target.value), ""));
+                setAscii(Try(() => TronWeb.fromAscii(ev.target.value), ""));
                 setTo(ev.target.value);
               }}
             />

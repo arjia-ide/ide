@@ -4,7 +4,6 @@ export default class ContractDeployer {
 
   tronWeb: any;
 
-
   constructor(tronWeb: any) {
     this.tronWeb = tronWeb;
   }
