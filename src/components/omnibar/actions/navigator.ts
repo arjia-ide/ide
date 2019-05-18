@@ -28,10 +28,10 @@ export default class NavigationActions implements IActionHandler {
           name: 'Goto Transaction',
           run: context => context.navigateTo("/transaction"),
         },
-        {
-          name: 'Goto Help',
-          run: () => window.location.href = '/documentation',
-        },
+        // {
+        //   name: 'Goto Help',
+        //   run: () => window.location.href = '/documentation',
+        // },
       ],
       action => action.name.toLowerCase().indexOf(query.toLowerCase()) >= 0);
   }

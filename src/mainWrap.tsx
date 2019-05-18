@@ -132,10 +132,10 @@ export default class MainWrap extends React.PureComponent<any, State> {
                       onClick={() => history.push(`/${tab.url}`)} />
             ))
           }
-          <AnchorButton minimal={true}
-                  text="Help"
-                  icon="info-sign"
-                  href="/documentation" />
+          {/*<AnchorButton minimal={true}*/}
+          {/*        text="Help"*/}
+          {/*        icon="info-sign"*/}
+          {/*        href="/documentation" />*/}
           <Popover
             content={
               <Menu className={Classes.ELEVATION_1}>
