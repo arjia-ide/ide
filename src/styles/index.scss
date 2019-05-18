@@ -1,0 +1,117 @@
+@import '../../node_modules/@blueprintjs/core/lib/scss/variables';
+@import '~bootstrap/scss/bootstrap-grid';
+
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Inter UI', sans-serif;
+}
+
+.mosaic-root {
+  //bottom: 55px;
+}
+
+
+#root {
+
+  height: 100%;
+
+
+  .actions-label {
+    margin-right: 10px;
+  }
+
+  .theme-selection {
+    margin: 0;
+  }
+
+  .navbar-separator {
+    height: 20px;
+    border-left: 1px solid $gray1;
+    margin: 10px;
+  }
+
+  .bp3-navbar {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pt-logo {
+    background: url(https://blueprintjs.com/assets/palantir.svg) no-repeat 50%;
+    width: 50px;
+    height: 50px;
+  }
+
+  .bp3-navbar-heading a {
+    color: $white;
+
+    .version {
+      color: $gray2;
+    }
+  }
+
+  > .mosaic {
+    height: calc(100% - 100px);
+  }
+
+  .github-link {
+    $size: 32px;
+    height: $size;
+    width: $size;
+    margin-left: 15px;
+  }
+}
+
+body {
+  //user-select: none;
+  //-webkit-user-select: none;
+}
+
+.example-window {
+  padding: 20px;
+  text-align: center;
+}
+
+
+.widget-body {
+  overflow-y: auto;
+  height: 100%;
+}
+
+
+.form-next {
+  .bp3-input-group {
+    display: inline-block;
+    width: 150px;
+    margin-right: 5px;
+  }
+
+  .bp3-button {
+    height: 30px;
+  }
+}
+
+
+.editor-error {
+  background: #A82A2A;
+}
+
+
+.hide-tabs {
+  .bp3-tab-list {
+    display: none;
+  }
+
+  .bp3-tab-panel {
+    margin-top: 0;
+  }
+}
+
+
+.flex-1 {
+  flex: 1;
+}
