@@ -1,5 +1,14 @@
 import TronWeb from "tronweb";
 
+interface ContractDeployOptions {
+  name: string;
+  userFeePercentage?: number;
+  parameters?: any[];
+}
+
+/**
+ * Handles Contract deployment
+ */
 export default class ContractDeployer {
 
   tronWeb: any;
@@ -8,7 +17,11 @@ export default class ContractDeployer {
     this.tronWeb = tronWeb;
   }
 
-  async deployContract(contract, deployOptions: any = {}) {
+  /**
+   * @param contract
+   * @param deployOptions
+   */
+  async deployContract(contract, deployOptions: ContractDeployOptions) {
 
     const tronWeb = this.tronWeb;
 

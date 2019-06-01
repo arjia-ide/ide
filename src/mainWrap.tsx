@@ -139,7 +139,7 @@ export default class MainWrap extends React.PureComponent<any, State> {
           <Popover
             content={
               <Menu className={Classes.ELEVATION_1}>
-                <MenuItem icon="git-repo" text="Arjia Bug Tracker" href="https://github.com/Rovak/arjia/issues" target="_blank"  labelElement={<Icon icon="share" />} />
+                <MenuItem icon="git-repo" text="Arjia Bug Tracker" href="https://github.com/arjia-ide/ide/issues" target="_blank"  labelElement={<Icon icon="share" />} />
                 <MenuItem icon="geosearch" text="Tronscan" href="https://www.tronscan.org" target="_blank"  labelElement={<Icon icon="share" />} />
                 <MenuItem icon="code-block" text="SmartContract UI" href="http://tronsmartcontract.space" target="_blank"  labelElement={<Icon icon="share" />} />
                 <MenuItem icon="grid" text="TronGrid" href="https://trongrid.io/" target="_blank"  labelElement={<Icon icon="share" />} />

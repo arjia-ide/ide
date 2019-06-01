@@ -39,6 +39,7 @@ import Structure from "./structure";
 import {withOmnibarActions} from "../../hoc/withOmnibarActions";
 import {IActionHandler} from "../../components/omnibar/actions/actionHandler";
 import {IAction} from "../../components/omnibar/action";
+import {find} from "lodash";
 
 const PANEL_CODE = 1;
 const PANEL_FILES = 2;
@@ -86,6 +87,7 @@ export default class SolidityCode extends React.Component<any, any> {
         originEnergyLimit: 10000000,
         feeLimit: 1000000000,
         userFeePercentage: 0,
+        parameters: [],
       },
       node: {},
       panels: {
@@ -142,10 +144,6 @@ export default class SolidityCode extends React.Component<any, any> {
     }
   }
 
-  getTronWeb() {
-    return this.props.getTronWeb();
-  }
-
   loadVersion = (version) => {
     return new Promise(resolve => {
       // @ts-ignore
@@ -190,6 +188,14 @@ export default class SolidityCode extends React.Component<any, any> {
     };
   };
 
+  getSelectedConract = () => {
+    const {output, selectedContract} = this.state;
+
+    const [file, contractName] = selectedContract.split(";");
+
+    return output.contracts[file][contractName];
+  };
+
   compile = async () => {
 
     const {solidityVersion, soljsonReleases} = this.state;
@@ -223,12 +229,15 @@ export default class SolidityCode extends React.Component<any, any> {
 
       const solc: any = await this.loadVersion(soljsonReleases[solidityVersion]);
 
-      console.log("SOLC", solc);
-
       const input = {
         language: 'Solidity',
         sources,
         settings: {
+          // https://solidity.readthedocs.io/en/latest/using-the-compiler.html
+          optimizer: {
+            enabled: true,
+            runs: 500
+          },
           outputSelection: {
             '*': {
               '*': ['*']
@@ -255,7 +264,14 @@ export default class SolidityCode extends React.Component<any, any> {
           intent: Intent.SUCCESS,
         });
 
-        this.setState({ output });
+        this.setState(state => ({
+          output,
+          deployOptions: {
+            ...state.deployOptions,
+            parameters: [],
+          }
+        }));
+
         this.props.setCompileOutput(output);
       }
 
@@ -288,7 +304,9 @@ export default class SolidityCode extends React.Component<any, any> {
     try {
       const contract = output.contracts[file][contractName];
 
-      const tronWeb = this.getTronWeb();
+      const tronWeb = this.props.getTronWeb();
+
+      console.log(this.state.deployOptions);
 
       const tx = await tronWeb.transactionBuilder.createSmartContract({
         abi: contract.abi,
@@ -317,10 +335,10 @@ export default class SolidityCode extends React.Component<any, any> {
       });
 
     } catch (e) {
-
+      console.error(e);
       TopToaster.show({
         icon: 'error',
-        message: e,
+        message: e.toString(),
         intent: Intent.DANGER,
       });
       this.handleClose();
@@ -389,11 +407,56 @@ export default class SolidityCode extends React.Component<any, any> {
         </Dialog>
       )
     })
-
   };
 
+  // renderImportFiles = () => {
+  //   this.setState({
+  //     modal: (
+  //       <Dialog
+  //         icon="folder-open"
+  //         onClose={this.handleClose}
+  //         title={`Import Files`}
+  //         usePortal={true}
+  //         isOpen={true}
+  //         style={{width: 700}}
+  //       >
+  //         <div className={Classes.DIALOG_BODY}>
+  //           <Dropzone
+  //             onDrop={acceptedFiles => console.log(acceptedFiles)}>
+  //             {({getRootProps, getInputProps, isDragActive}) => (
+  //               <div {...getRootProps()}>
+  //                 <input {...getInputProps()} />
+  //                 <NonIdealState
+  //                   icon="folder-open"
+  //                   title={isDragActive ? "Drop the files here ..." : "Click here to select files"}
+  //                   description="Drag 'n' drop some files here, or click to select files"
+  //                 />
+  //               </div>
+  //             )}
+  //           </Dropzone>
+  //         </div>
+  //         <div className={Classes.DIALOG_FOOTER}>
+  //           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+  //             <Button text="Close"
+  //                     intent={Intent.NONE}
+  //                     onClick={this.handleClose}/>
+  //           </div>
+  //         </div>
+  //       </Dialog>
+  //     )
+  //   })
+  // };
+
+
   renderDeploymentPopup = () => {
-    const {deployOptions} = this.state;
+    const {
+      deployOptions,
+      output,
+    } = this.state;
+
+    const selectedContract = this.getSelectedConract();
+
+    const constructor = find(selectedContract.abi, method => method.type === 'constructor');
 
     this.setState({
       modal: (
@@ -446,6 +509,28 @@ export default class SolidityCode extends React.Component<any, any> {
               {/*/>*/}
             </FormGroup>
 
+            {
+              constructor &&
+                <React.Fragment>
+                  <h3>Constructor</h3>
+                  {
+                    constructor.inputs.map((input, index) => (
+                      <FormGroup
+                        label={input.name}
+                        labelInfo="(required)"
+                      >
+                        <InputGroup
+                          placeholder={input.type}
+                            onChange={ev => {
+                              deployOptions.parameters[index] = ev.target.value;
+                              this.setDeployOption(deployOptions);
+                            }}
+                        />
+                      </FormGroup>
+                    ))
+                  }
+                </React.Fragment>
+            }
           </div>
           <div className={Classes.DIALOG_FOOTER}>
             <div className={Classes.DIALOG_FOOTER_ACTIONS}>
@@ -477,8 +562,14 @@ export default class SolidityCode extends React.Component<any, any> {
             <option>Select contract</option>
             {
               output && flatMap(Object.entries(output.contracts), ([name, contract]) =>
-                Object.keys(contract).map(filename => <option key={`${name};${filename}`}
-                                                              value={`${name};${filename}`}>{name} - {filename}</option>)
+                Object.keys(contract)
+                  .map(filename => (
+                    <option
+                      key={`${name};${filename}`}
+                      value={`${name};${filename}`}>{name} - {filename}
+                    </option>
+                  )
+                )
               )
             }
           </select>
@@ -658,9 +749,14 @@ export default class SolidityCode extends React.Component<any, any> {
             ))
           }
         </MenuItem>
+        {/*<MenuItem icon="folder-open"*/}
+        {/*           text="Import Files"*/}
+        {/*           onClick={this.renderImportFiles} />*/}
+
         <MenuItem icon="new-text-box"
                    text="Rename"
                    onClick={this.changeProjectName} />
+
         <MenuItem icon="trash"
                    text="Delete"
                    intent={Intent.DANGER}
