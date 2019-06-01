@@ -1,11 +1,12 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {Button, ControlGroup, InputGroup, Intent, Navbar, NonIdealState} from "@blueprintjs/core";
+import {Button, ControlGroup, InputGroup, Intent, Navbar, NonIdealState, Spinner} from "@blueprintjs/core";
 import {find, last} from "lodash";
-import {CodeEditorAsync} from "./async";
 import {withApi} from "../../hoc/withApi";
 import {withSelectors} from "../../hoc/withSelectors";
 import {TopToaster} from "../../utils/toast";
+
+const CodeEditorAsync = React.lazy(() => import('./codeEditor'));
 
 @withApi
 @withSelectors(models => ({
@@ -272,21 +273,28 @@ export default class Editor extends React.Component<any, any> {
         </Navbar>
         {
           currentFile ?
-            <CodeEditorAsync
-              width="100%"
-              height="calc(100% - 50px)"
-              language={language}
-              // theme="?vs-dark"
-              value={this.props.activeFileCode}
-              options={{
-                selectOnLineNumbers: true,
-                automaticLayout: true,
-                autoIndent: true,
-                fontSize: "12px",
-              }}
-              onChange={this.onChange}
-              editorDidMount={this.editorDidMount}
-            /> :
+            <React.Suspense
+              fallback={
+                <div className="mt-5 text-center">
+                  <Spinner />
+                </div>
+              }>
+              <CodeEditorAsync
+                width="100%"
+                height="calc(100% - 50px)"
+                language={language}
+                // theme="?vs-dark"
+                value={this.props.activeFileCode}
+                options={{
+                  selectOnLineNumbers: true,
+                  automaticLayout: true,
+                  autoIndent: true,
+                  fontSize: "12px",
+                }}
+                onChange={this.onChange}
+                editorDidMount={this.editorDidMount}
+              />
+            </React.Suspense>:
             <NonIdealState
               icon="code"
               title="Please select a file"

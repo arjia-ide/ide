@@ -81,6 +81,7 @@
     "react-async-component": "^2.0.0",
     "react-dev-utils": "^6.1.1",
     "react-dom": "16.8.1",
+    "react-dropzone": "^10.1.4",
     "react-intl": "^2.7.2",
     "react-monaco-editor": "^0.22.0",
     "react-mosaic-component": "^2.0.2",
@@ -121,8 +122,6 @@
   },
   "scripts": {
     "start": "node --max_old_space_size=8192 scripts/start.js",
-    "server:start": "ts-node -O '{\"module\": \"commonjs\"}' server/index.ts",
-    "server:dev": "ts-node-dev -O '{\"module\": \"commonjs\"}' server/index.ts",
     "build": "PUBLIC_URL=https://arjia.city GENERATE_SOURCEMAP=false node --max_old_space_size=12288 scripts/build.js",
     "build:analyze": "ANALYZE=true node scripts/build.js",
     "test": "node scripts/test.js"
