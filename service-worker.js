@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "https://arjia.city/precache-manifest.0c66d2c16f15fae2de9e328ffd9bb3fc.js"
+  "https://arjia.city/precache-manifest.75d1c4baa6d8d87f6ccd87a7d98f0d91.js"
 );
 
 workbox.clientsClaim();
