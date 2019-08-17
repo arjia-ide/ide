@@ -7,6 +7,7 @@ install:
   - yarn install
 script:
   - CI=false yarn run build
+  - cp ./CNAME ./build/CNAME
 
 cache:
   yarn: true
