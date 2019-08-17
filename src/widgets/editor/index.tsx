@@ -19,7 +19,7 @@ import {
 } from "@blueprintjs/core";
 import TronWeb from "tronweb";
 import {connect} from "react-redux";
-import {filter, flatMap, trim} from "lodash";
+import {filter, find, flatMap, trim} from "lodash";
 import * as BrowserSolc from "../../utils/solc";
 import TransactionDetails from "../../components/transactionDetails";
 import WidgetBase from "../widgetBase";
@@ -34,12 +34,11 @@ import {withDialogs} from "../../hoc/withDialogs";
 import {withApi} from "../../hoc/withApi";
 import PublishGist from "../../components/github/publishGist";
 import Deployment from "./deployment";
-import {trolcSolcVersion, tronSolcUrl} from "./compiler/tronSolc";
+import {tronSolcGithubVersions} from "./compiler/tronSolc";
 import Structure from "./structure";
 import {withOmnibarActions} from "../../hoc/withOmnibarActions";
 import {IActionHandler} from "../../components/omnibar/actions/actionHandler";
 import {IAction} from "../../components/omnibar/action";
-import {find} from "lodash";
 
 const PANEL_CODE = 1;
 const PANEL_FILES = 2;
@@ -94,7 +93,7 @@ export default class SolidityCode extends React.Component<any, any> {
         structure: false,
         deployment: false,
       },
-      solidityVersion: trolcSolcVersion,
+      solidityVersion: 'tron-solc_v4',
       soljsonReleases: {},
     };
 
@@ -132,9 +131,12 @@ export default class SolidityCode extends React.Component<any, any> {
         soljsonReleases[versionNumber] = `https://ethereum.github.io/solc-bin/bin/${soljsonReleases[versionNumber]}`;
       }
 
-      soljsonReleases[trolcSolcVersion] = tronSolcUrl;
-
-      this.setState({ soljsonReleases, });
+      this.setState({
+        soljsonReleases: {
+          ...soljsonReleases,
+          ...tronSolcGithubVersions,
+        },
+      });
     });
 
     const { gist } = queryString.parse(this.props.location.search);
