@@ -102,7 +102,6 @@
     "style-loader": "0.23.0",
     "subscriptions-transport-ws": "^0.9.15",
     "terser-webpack-plugin": "1.1.0",
-    "tron-solc": "^0.4.24",
     "tronweb": "2.5.3",
     "trx-graphql-server": "^0.0.14",
     "ts-node": "^7.0.1",
