@@ -93,7 +93,7 @@ export default class SolidityCode extends React.Component<any, any> {
         structure: false,
         deployment: false,
       },
-      solidityVersion: 'tron-solc_v4',
+      solidityVersion: 'tron-solc_0.5.8',
       soljsonReleases: {},
     };
 
