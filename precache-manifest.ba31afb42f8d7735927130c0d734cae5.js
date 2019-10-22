@@ -4,12 +4,12 @@ self.__precacheManifest = [
     "url": "https://arjia.city/static/js/0.1281600b.chunk.js"
   },
   {
-    "revision": "9945ba9aa52161440da4",
+    "revision": "641810c8aabd7ea4f600",
     "url": "https://arjia.city/static/css/main.41a434ce.chunk.css"
   },
   {
-    "revision": "9945ba9aa52161440da4",
-    "url": "https://arjia.city/static/js/main.9945ba9a.chunk.js"
+    "revision": "641810c8aabd7ea4f600",
+    "url": "https://arjia.city/static/js/main.641810c8.chunk.js"
   },
   {
     "revision": "5ba10676af578ad646cb",
@@ -256,12 +256,12 @@ self.__precacheManifest = [
     "url": "https://arjia.city/static/js/runtime~main.ad57a807.js"
   },
   {
-    "revision": "37bc9dfb1a5ca0e26367785406de1e49",
-    "url": "https://arjia.city/editor.worker.js"
-  },
-  {
     "revision": "f24af87409587aba0e6c3979cd6006ce",
     "url": "https://arjia.city/json.worker.js"
+  },
+  {
+    "revision": "37bc9dfb1a5ca0e26367785406de1e49",
+    "url": "https://arjia.city/editor.worker.js"
   },
   {
     "revision": "69c53361c7b657ac7e922c09e2e2d17f",
@@ -280,10 +280,6 @@ self.__precacheManifest = [
     "url": "https://arjia.city/static/media/icons-16.3326c360.eot"
   },
   {
-    "revision": "895bc7de59413bb8029ac83cac8c9e1b",
-    "url": "https://arjia.city/static/media/icons-16.895bc7de.woff"
-  },
-  {
     "revision": "b6382c6d9ffca4a1c50f58a17fce15a9",
     "url": "https://arjia.city/static/media/icons-16.b6382c6d.ttf"
   },
@@ -300,7 +296,11 @@ self.__precacheManifest = [
     "url": "https://arjia.city/static/media/icons-20.aa8f3ca0.ttf"
   },
   {
-    "revision": "d18083e7a5029b62a2bc86241e3bb9db",
+    "revision": "895bc7de59413bb8029ac83cac8c9e1b",
+    "url": "https://arjia.city/static/media/icons-16.895bc7de.woff"
+  },
+  {
+    "revision": "ddd21014ad8529522083ce380a2a595e",
     "url": "https://arjia.city/index.html"
   }
 ];
