@@ -6,11 +6,12 @@ import {copyWithConfirmation} from "../../utils/clipboard";
 import {connect} from "react-redux";
 
 @withDialogs
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     gitHubToken: state.config.gitHubToken,
   }),
-  ({ config: { setGithubToken } }) => ({
+  ({ config: { setGithubToken } }: any) => ({
     setGithubToken
   }),
 )
@@ -73,12 +74,12 @@ export default class PublishGist extends React.Component<any, any> {
     });
 
     this.props.onSuccess(data);
-  };
+  }
 
   setAccessToken = (token) => {
     this.props.setGithubToken(token);
     this.doPublish();
-  };
+  }
 
   showAccessToken = () => {
 
@@ -113,7 +114,7 @@ export default class PublishGist extends React.Component<any, any> {
         </Fragment>
       )
     });
-  };
+  }
 
   render() {
     return (

@@ -3,14 +3,15 @@ import {connect} from "react-redux";
 import WidgetBase from "../widgetBase";
 import ContractEvents from "./contract";
 
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     projects: state.ide.projects,
     activeProject: state.ide.projects[state.ide.activeProject],
     files: state.ide.projects[state.ide.activeProject].files,
     activeFile: state.ide.activeFile,
   }),
-  ({ ide }) => ({
+  ({ ide }: any) => ({
     updateFile: ide.updateFile,
     addFile: ide.addFile,
   }),
@@ -24,10 +25,6 @@ export default class ContractEventsWidget extends React.Component<any, any> {
 
     this.state = {
     };
-  };
-
-  componentDidMount() {
-
   }
 
   handleClose = () => {
@@ -35,7 +32,7 @@ export default class ContractEventsWidget extends React.Component<any, any> {
       modal: null,
       events: [],
     });
-  };
+  }
 
 
   renderWidget = (id) => {
@@ -46,7 +43,7 @@ export default class ContractEventsWidget extends React.Component<any, any> {
           cmp: <ContractEvents/>,
         };
     }
-  };
+  }
 
   render() {
 
@@ -61,6 +58,6 @@ export default class ContractEventsWidget extends React.Component<any, any> {
           node={1}
         />
       </Fragment>
-    )
+    );
   }
 }

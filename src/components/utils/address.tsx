@@ -1,22 +1,19 @@
 import React from "react";
 import {AnchorButton, Button, ButtonGroup, Card, Popover, Tag} from "@blueprintjs/core";
-import {addressFromHex, addressToHex} from "@trx/core/dist/utils/address"
+import {addressFromHex, addressToHex} from "@trx/core/dist/utils/address";
 import {connect} from 'react-redux';
 import {Try} from "../../utils/error";
 import {withApi} from "../../hoc/withApi";
 import {copyWithConfirmation} from "../../utils/clipboard";
 
 
-interface AddressProps {
-  address: string;
-}
-
+// @ts-ignore
 @withApi
 class Address extends React.Component<any, any> {
 
   getEventUrl = () => {
     return this.props.network.fullNodeUrl;
-  };
+  }
 
   buildPopup = () => {
 
@@ -60,8 +57,8 @@ class Address extends React.Component<any, any> {
             onClick={() => !!favoriteAddresses[base58Address] ? deleteFavoriteAddress(base58Address) : addFavoriteAddress(base58Address)}/>
         </ButtonGroup>
       </Card>
-    )
-  };
+    );
+  }
 
 
   render() {
@@ -79,15 +76,15 @@ class Address extends React.Component<any, any> {
           </Tag>
       </Popover>
 
-    )
+    );
   }
 }
 
 export default connect(
-  state => ({
+  (state: any) => ({
     favoriteAddresses: state.favorites.addresses,
   }),
-  ({ favorites: { addFavoriteAddress, deleteFavoriteAddress } }) => ({
+  ({ favorites: { addFavoriteAddress, deleteFavoriteAddress } }: any) => ({
     addFavoriteAddress,
     deleteFavoriteAddress
   })

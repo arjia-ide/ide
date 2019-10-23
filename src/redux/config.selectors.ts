@@ -24,7 +24,7 @@ export const activeNetworkSelector = (state): Network => {
       fullNodeUrl: tronWeb.fullNode.host,
       solidityNodeUrl: tronWeb.solidityNode.host,
       eventServerUrl: tronWeb.eventServer.host,
-    }
+    };
   }
 
   return networks[activeNetwork];
@@ -56,7 +56,7 @@ export const activeWalletSelector = state => {
 
   const {config} = state;
 
-  let wallet = config.wallets[config.activeWallet];
+  const wallet = config.wallets[config.activeWallet];
 
   if (config.activeNetwork === 'extension') {
 
@@ -77,7 +77,7 @@ export const activeWalletSelector = state => {
     return {
       name: 'None',
       address: '-',
-    }
+    };
   }
 
   return wallet;

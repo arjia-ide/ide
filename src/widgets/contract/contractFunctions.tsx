@@ -17,8 +17,8 @@ import TransactionDetails from "../../components/transactionDetails";
 import {withApi} from "../../hoc/withApi";
 import HttpApi from "@trx/core/dist/clients/http";
 import ContractApi from "@trx/core/dist/smartcontract/contractApi";
-import HttpTransactionBuilder from "@trx/core/dist/clients/http/transactionBuilder"
-import PrivateKeyTransactionSigner from "@trx/core/dist/transaction/privateKeyTransactionSigner"
+import HttpTransactionBuilder from "@trx/core/dist/clients/http/transactionBuilder";
+import PrivateKeyTransactionSigner from "@trx/core/dist/transaction/privateKeyTransactionSigner";
 import MethodCallResult from "@trx/core/dist/smartcontract/methodCallResult";
 import MethodAbi from "@trx/core/dist/smartcontract/methodAbi";
 import {TopToaster} from "../../utils/toast";
@@ -28,13 +28,13 @@ import {withRouter} from "react-router-dom";
 
 const trxFieldName = "___trx_value";
 
-function FunctionParameter({ name, type, onChange = (name: string) => {} }) {
+function FunctionParameter({ name, type, onChange = (x: string) => null }) {
   return (
     <InputGroup placeholder={`${name} - ${type}`} onChange={ev => onChange(ev.target.value)} />
   );
 }
 
-function PayableFunction({ name, inputs = [], loading = false, submit, value = {}, onChange = (name: string, value: any) => {} }) {
+function PayableFunction({ name, inputs = [], loading = false, submit, value = {}, onChange = (n: string, v: any) => null }) {
 
   return (
     <FormGroup
@@ -42,19 +42,19 @@ function PayableFunction({ name, inputs = [], loading = false, submit, value = {
     >
       <ControlGroup vertical={false}>
         <Checkbox />
-        { inputs.map(input => <FunctionParameter key={input.name} {...input} onChange={value => onChange(input.name, value)} />) }
+        { inputs.map(input => <FunctionParameter key={input.name} {...input} onChange={v => onChange(input.name, v)} />) }
         <FunctionParameter
           key={trxFieldName}
           name={trxFieldName}
           type="uint256"
-          onChange={value => onChange(trxFieldName, value)} />
+          onChange={v => onChange(trxFieldName, v)} />
         <Button text="Send" loading={loading} onClick={submit} />
       </ControlGroup>
     </FormGroup>
-  )
+  );
 }
 
-function ConstantFunction({ name, inputs = [], value = {}, submit, loading = false, onChange = (name: string, value: any) => {} }) {
+function ConstantFunction({ name, inputs = [], value = {}, submit, loading = false, onChange = (n: string, v: any) => null }) {
 
   return (
     <FormGroup
@@ -62,14 +62,14 @@ function ConstantFunction({ name, inputs = [], value = {}, submit, loading = fal
     >
       <ControlGroup vertical={false}>
         <Checkbox />
-        { inputs.map((input, index) => <FunctionParameter key={index} value={value[input.name]} {...input} onChange={value => onChange(input.name, value)} />) }
+        { inputs.map((input, index) => <FunctionParameter key={index} value={value[input.name]} {...input} onChange={v => onChange(input.name, v)} />) }
         <Button text="Send" loading={loading} onClick={submit} />
       </ControlGroup>
     </FormGroup>
-  )
+  );
 }
 
-function SendFunction({ name, inputs = [], value = {}, loading = false, submit, onChange = (name: string, value: any) => {} }) {
+function SendFunction({ name, inputs = [], value = {}, loading = false, submit, onChange = (n: string, v: any) => null }) {
 
   return (
     <FormGroup
@@ -77,18 +77,19 @@ function SendFunction({ name, inputs = [], value = {}, loading = false, submit, 
     >
       <ControlGroup vertical={false}>
         <Checkbox />
-        { inputs.map(input => <FunctionParameter key={input.name} value={value[input.name]} {...input} onChange={value => onChange(input.name, value)} />) }
+        { inputs.map(input => <FunctionParameter key={input.name} value={value[input.name]} {...input} onChange={v => onChange(input.name, v)} />) }
         <Button text="Send" loading={loading} onClick={submit} />
       </ControlGroup>
     </FormGroup>
-  )
+  );
 }
 
 @withRouter
 @withApi
+// @ts-ignore
 @connect(
-  state => ({}),
-  ({ contractFunctions: { addContractCall } }) => ({
+  (state: any) => ({}),
+  ({ contractFunctions: { addContractCall } }: any) => ({
     addContractCall
   })
 )
@@ -111,7 +112,7 @@ export default class ContractFunctions extends React.Component<any, any> {
       functionLoading: {},
       modal: null,
     };
-  };
+  }
 
   componentDidMount(): void {
     if (this.props.match.params.id) {
@@ -143,7 +144,7 @@ export default class ContractFunctions extends React.Component<any, any> {
       const functions = [];
       const events = contract.abi.getEvents();
 
-      for (let method of contract.abi.getMethods()) {
+      for (const method of contract.abi.getMethods()) {
 
         if (method.isConstant()) {
           constantFunctions.push(method);
@@ -163,7 +164,7 @@ export default class ContractFunctions extends React.Component<any, any> {
         payableFunctions,
         isLoading: false,
         isReady: true,
-      })
+      });
     } catch (e) {
       console.error(e);
       TopToaster.show({
@@ -202,7 +203,7 @@ export default class ContractFunctions extends React.Component<any, any> {
     this.setState({
       modal: null,
     });
-  };
+  }
 
   /**
    * Calls the given method
@@ -216,7 +217,7 @@ export default class ContractFunctions extends React.Component<any, any> {
 
     if (methodApi.abi.isPayable()) {
 
-      let methodArgs = args.slice();
+      const methodArgs = args.slice();
 
       console.log("payable", args, methodArgs, options);
 
@@ -236,11 +237,11 @@ export default class ContractFunctions extends React.Component<any, any> {
     value = value.toString();
 
     if (TronWeb.isAddress(value)) {
-      return <Address address={value} />
+      return <Address address={value} />;
     }
 
     return value;
-  };
+  }
 
   async submitFunction(funcName) {
 
@@ -270,12 +271,12 @@ export default class ContractFunctions extends React.Component<any, any> {
       if (methodAbi.hasInput()) {
         const args = methodAbi.inputs.map(input => funcParameters[input.name] || null);
         methodCallResult = await this.callMethod(contract, funcName, args, {
-          trxAmount: funcParameters["___trx_value"] || 0,
+          trxAmount: funcParameters.___trx_value || 0,
         });
         inputParameters = methodAbi.inputs.map(input => ({ name: input.name, value: funcParameters[input.name] || null }));
       } else {
         methodCallResult = await this.callMethod(contract, funcName, [], {
-          trxAmount: funcParameters["___trx_value"] || 0,
+          trxAmount: funcParameters.___trx_value || 0,
         });
       }
 
@@ -287,7 +288,7 @@ export default class ContractFunctions extends React.Component<any, any> {
         };
       } else if (typeof result === 'object') {
 
-        for (let [name, value] of Object.entries(result)) {
+        for (const [name, value] of Object.entries(result)) {
           result[name] = this.prepareValue(value);
         }
       } else {
@@ -349,7 +350,7 @@ export default class ContractFunctions extends React.Component<any, any> {
             </div>
           </Dialog>
         )
-      })
+      });
     } catch (e) {
       console.error(e);
     } finally {
@@ -399,7 +400,7 @@ export default class ContractFunctions extends React.Component<any, any> {
             </ControlGroup>
           }
         />
-      )
+      );
     }
 
     return (
@@ -411,7 +412,6 @@ export default class ContractFunctions extends React.Component<any, any> {
           { functions.map(func => <SendFunction key={func.name} {...func} loading={functionLoading[func.name] || false} submit={() => this.submitFunction(func.name)} value={functionParameters[func.name] || {}} onChange={(paramName, value) => this.setFunctionParameter(func.name, paramName, value)} />) }
         </div>
       </Fragment>
-    )
+    );
   }
-
 }

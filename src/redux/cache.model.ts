@@ -1,4 +1,6 @@
-export const cache = {
+import { createModel } from "@rematch/core";
+
+export const cache = createModel({
   state: {
 
   },
@@ -16,7 +18,7 @@ export const cache = {
           ...(state[key] || {}),
           ...value,
         },
-      })
+      });
     },
   },
-};
+});

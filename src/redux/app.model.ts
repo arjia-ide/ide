@@ -1,5 +1,6 @@
+import { createModel } from "@rematch/core";
 
-export const app = {
+export const app = createModel({
   state: {
     activeLanguage: 'en',
   },
@@ -11,4 +12,4 @@ export const app = {
       };
     },
   },
-};
+});

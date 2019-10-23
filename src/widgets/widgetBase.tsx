@@ -7,7 +7,7 @@ import {MosaicBranch} from "react-mosaic-component/src/types";
 
 const NumberMosaic = Mosaic.ofType<number>();
 const NumberMosaicWindow = MosaicWindow.ofType<number>();
-//
+
 export const THEMES = {
   ['Blueprint']: 'mosaic-blueprint-theme',
   ['Blueprint Dark']: classNames('mosaic-blueprint-theme', Classes.DARK),
@@ -32,10 +32,6 @@ export default class WidgetBase extends React.Component<any, any> {
     };
   }
 
-  private createNode: () => number = () => {
-    return ++this.count;
-  };
-
   renderTile = (count: number, path: MosaicBranch[]) => {
 
     const { title, cmp, widgetBodyProps = this.props.widgetBodyProps } = this.props.renderWidget(count);
@@ -52,18 +48,8 @@ export default class WidgetBase extends React.Component<any, any> {
           {cmp}
         </div>
       </NumberMosaicWindow>
-    )
-  };
-
-  private onChange = (currentNode: MosaicNode<number> | null) => {
-    if (this.props.onChange) {
-      this.props.onChange(currentNode);
-    } else {
-      this.setState({
-        node: currentNode,
-      });
-    }
-  };
+    );
+  }
 
   render() {
 
@@ -83,10 +69,24 @@ export default class WidgetBase extends React.Component<any, any> {
           value={node}
           onChange={this.onChange}
           initialValue={null}
-          className={THEMES['Blueprint']}
+          className={THEMES.Blueprint}
         />
       </React.Fragment>
     );
+  }
+
+  private createNode: () => number = () => {
+    return ++this.count;
+  }
+
+  private onChange = (currentNode: MosaicNode<number> | null) => {
+    if (this.props.onChange) {
+      this.props.onChange(currentNode);
+    } else {
+      this.setState({
+        node: currentNode,
+      });
+    }
   }
 
 

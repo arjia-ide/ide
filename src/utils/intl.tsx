@@ -6,5 +6,5 @@ export function FormattedTRX(props) {
     <FormattedNumber {...props}
                      stye="decimal"
                      maximumFractionDigits={6}  />
-  )
+  );
 }

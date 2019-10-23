@@ -18,7 +18,7 @@ export function withDialogs(InnerComponent): any {
       this.setState({
         modal: null,
       });
-    };
+    }
 
     prompt = (title, value = "") => {
       return new Promise((resolve, reject) => {
@@ -39,7 +39,7 @@ export function withDialogs(InnerComponent): any {
           )
         });
       });
-    };
+    }
 
     confirmDelete = ({ title = 'Confirm Delete', icon = 'trash', body = '', cancelText = 'Cancel', confirmText = 'Delete' }) => {
       return new Promise((resolve) => {
@@ -67,7 +67,7 @@ export function withDialogs(InnerComponent): any {
           )
         });
       });
-    };
+    }
 
     dialog = ({
                 icon = '',
@@ -101,7 +101,7 @@ export function withDialogs(InnerComponent): any {
           </Dialog>
         )
       });
-    };
+    }
 
     render() {
 

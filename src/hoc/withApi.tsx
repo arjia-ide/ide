@@ -3,7 +3,7 @@ import {withWallet} from "./withWallet";
 import {withNetwork} from "./withNetwork";
 import TronWeb from "tronweb";
 
-export function withApi(InnerComponent) {
+export function withApi(InnerComponent): any {
 
   const wrappedComponent = class extends React.Component<any, any> {
 
@@ -27,7 +27,7 @@ export function withApi(InnerComponent) {
         network.solidityNodeUrl,
         network.eventServerUrl,
         privateKey);
-    };
+    }
 
     render() {
 

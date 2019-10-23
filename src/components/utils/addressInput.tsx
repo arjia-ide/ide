@@ -1,23 +1,21 @@
-import React from "react";
-import {ItemRenderer, Suggest} from "@blueprintjs/select";
-import {MenuItem} from "@blueprintjs/core";
-import {connect} from 'react-redux';
-import {isAddress} from "@trx/core/dist/utils/utils"
-
+import React, { useCallback, useState } from "react";
+import { ItemRenderer, Suggest } from "@blueprintjs/select";
+import { MenuItem } from "@blueprintjs/core";
+import { useSelector } from 'react-redux';
+import {isAddress} from "@trx/core/dist/utils/utils";
 
 interface Address {
   address: string;
 }
 
 interface AddressInputProps {
-  onValidAddress?: (string) => void;
-  onChange?: (string) => void;
-  favoriteAddresses?: { [key: string]: any }
+  onValidAddress?: (x) => void;
+  onChange?: (x) => void;
 }
 
 const AddressSuggestion = Suggest.ofType<Address>();
 
-const renderItem: ItemRenderer<Address> = (address, { handleClick, modifiers, query }) => {
+const renderItem: ItemRenderer<Address> = (address, { handleClick, modifiers }) => {
   if (!modifiers.matchesPredicate) {
     return null;
   }
@@ -34,67 +32,37 @@ const renderItem: ItemRenderer<Address> = (address, { handleClick, modifiers, qu
   );
 };
 
+export default function AddressInput({
+  onChange = (address: string) => null,
+  onValidAddress = (address: string) => null,
+}: AddressInputProps) {
 
-@connect(
-  state => ({
-    favoriteAddresses: state.favorites.addresses,
-  }),
-)
-export default class AddressInput extends React.Component<AddressInputProps, any> {
+  const [query, setQuery] = useState("");
+  const favoriteAddresses = useSelector(({ favorites }) => favorites.addresses);
 
-  state: any = {
-    query: '',
-  };
+  const onValueChange = useCallback((address) => {
 
-  constructor(props) {
-    super(props);
-
-  };
-
-  componentDidMount() {
-
-  }
-
-  onItemSelect = (address) => {
-    this.onValueChange(address.address);
-  };
-
-  onValueChange = (address) => {
-    const { onChange } = this.props;
-
-    onChange && onChange(address);
-
-    this.setState({ query: address, });
+    onChange(address);
+    setQuery(address);
 
     if (isAddress(address)) {
-      this.onValidAddress(address);
+      onValidAddress(address);
     }
-  };
+  }, []);
 
-  onValidAddress = (address) => {
-    const { onValidAddress } = this.props;
 
-    onValidAddress && onValidAddress(address);
-  };
-
-  render() {
-
-    const {query} = this.state;
-
-    return (
-      <div>
-        <AddressSuggestion
-          items={Object.values(this.props.favoriteAddresses)}
-          query={query}
-          onQueryChange={ev => this.onValueChange(ev)}
-          itemRenderer={renderItem}
-          onItemSelect={this.onItemSelect}
-          noResults={null}
-          inputValueRenderer={address => address.address}
-          popoverProps={{ minimal: true}}
-        />
-      </div>
-    )
-  }
-
+  return (
+    <div>
+      <AddressSuggestion
+        items={Object.values(favoriteAddresses)}
+        query={query}
+        onQueryChange={onValueChange}
+        itemRenderer={renderItem}
+        onItemSelect={(address) => onValueChange(address.address)}
+        noResults={null}
+        inputValueRenderer={address => address.address}
+        popoverProps={{ minimal: true }}
+      />
+    </div>
+  );
 }

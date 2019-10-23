@@ -9,7 +9,7 @@ import copy from 'copy-to-clipboard';
 
 const cellRenderer = (data, headerName, onRowEdit, { isDeploying }) => (rowIndex) => {
 
-  if (headerName == 'deploy') {
+  if (headerName === 'deploy') {
     return (
       <Cell
         style={{ padding: 5, textAlign: 'center' }} >
@@ -19,10 +19,10 @@ const cellRenderer = (data, headerName, onRowEdit, { isDeploying }) => (rowIndex
         >
         </Checkbox>
       </Cell>
-    )
+    );
   }
 
-  if (headerName == 'feePercentage') {
+  if (headerName === 'feePercentage') {
     return (
       <Cell style={{ padding: 0  }}>
         <NumericInput
@@ -33,10 +33,10 @@ const cellRenderer = (data, headerName, onRowEdit, { isDeploying }) => (rowIndex
           min={0}
           max={100} />
       </Cell>
-    )
+    );
   }
 
-  if (headerName == 'deployName') {
+  if (headerName === 'deployName') {
     return (
       <Cell style={{ padding: 0  }}>
         <InputGroup
@@ -45,10 +45,10 @@ const cellRenderer = (data, headerName, onRowEdit, { isDeploying }) => (rowIndex
           onChange={ev => onRowEdit(rowIndex, { [headerName]: ev.target.value })}
         />
       </Cell>
-    )
+    );
   }
 
-  if (headerName == 'address') {
+  if (headerName === 'address') {
     return (
       <Cell loading={isDeploying} style={{ lineHeight: '30px' }}>
         {
@@ -61,19 +61,20 @@ const cellRenderer = (data, headerName, onRowEdit, { isDeploying }) => (rowIndex
   }
 
   if (!data[rowIndex] || !data[rowIndex] || typeof data[rowIndex][headerName] === 'undefined') {
-    return <Cell>&nbsp;</Cell>
+    return <Cell>&nbsp;</Cell>;
   }
 
-  return <Cell style={{ lineHeight: '30px' }}>{data[rowIndex][headerName]}</Cell>
+  return <Cell style={{ lineHeight: '30px' }}>{data[rowIndex][headerName]}</Cell>;
 };
 
 
 @withApi
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     output: state.ide.compileOutput,
   }),
-  ({ ide }) => ({
+  ({ ide }: any) => ({
     setDeployedContracts: ide.setDeployedContracts,
   }),
 )
@@ -109,7 +110,7 @@ export default class Deployment extends React.Component<any, any> {
         ...row,
         ...(values[index] || {}),
       }));
-  };
+  }
 
 
   handleClose = () => {
@@ -117,7 +118,7 @@ export default class Deployment extends React.Component<any, any> {
       modal: null,
       events: [],
     });
-  };
+  }
 
   renderLoadingDeployment = () => {
     this.setState({
@@ -135,12 +136,12 @@ export default class Deployment extends React.Component<any, any> {
           </div>
         </Dialog>
       )
-    })
-  };
+    });
+  }
 
   hasContractsToDeploy = () => {
     return filter(this.buildContracts(), contract => !!contract.deploy).length > 0;
-  };
+  }
 
   deployContracts = async () => {
 
@@ -152,7 +153,7 @@ export default class Deployment extends React.Component<any, any> {
       const output = this.props.output;
 
       let index = 0;
-      for (let contractConfig of this.buildContracts()) {
+      for (const contractConfig of this.buildContracts()) {
         if (contractConfig.deploy) {
           const [file, contractName] = contractConfig.id.split(";");
           const contract = output.contracts[file][contractName];
@@ -179,7 +180,7 @@ export default class Deployment extends React.Component<any, any> {
     } finally {
       this.setState({ isDeploying: false });
     }
-  };
+  }
 
   onRowEdit = (index, obj) => {
 
@@ -192,7 +193,7 @@ export default class Deployment extends React.Component<any, any> {
         }
       }
     }));
-  };
+  }
 
   render() {
 
@@ -255,6 +256,6 @@ export default class Deployment extends React.Component<any, any> {
           }
         </Table>
       </React.Fragment>
-    )
+    );
   }
 }

@@ -12,14 +12,14 @@ export default class GithubImporter {
 
     const { data: { files, description } } = await xhr.get(gistUrl);
 
-    let project = {
+    const project = {
       id: newId(),
       name: 'Gist: ' + description,
       files: {},
       gistId,
     };
 
-    for (let filename of Object.keys(files)) {
+    for (const filename of Object.keys(files)) {
 
       const file = files[filename];
 

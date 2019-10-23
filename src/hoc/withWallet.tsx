@@ -1,52 +1,21 @@
-import React from "react";
-import {connect} from "react-redux";
-import {activeWalletSelector} from "../redux/config.selectors";
+import React, { ComponentType } from "react";
+import { useWallet } from "../hooks/useWallet";
 
-export function withWallet(InnerComponent) {
+export function withWallet<T extends ComponentType>(InnerComponent: T): T {
 
-  const wrappedComponent = class extends React.Component<any, any> {
+  // @ts-ignore
+  return function Component(props: any) {
 
-    state = {
-      extensionAddress: null,
-    };
+    const walletFuncs: any = useWallet();
 
-    reloadWallet = () => {
-      if (this.props.wallet) {
-        this.props.reloadWallet(this.props.wallet.address);
-      }
-    };
+    return (
+      <React.Fragment>
+        <InnerComponent
+          {...props}
+          {...walletFuncs}
+        />
+      </React.Fragment>
 
-    render() {
-
-      return (
-        <React.Fragment>
-          <InnerComponent
-            {...this.props}
-            wallet={this.props.wallet}
-            wallets={this.props.wallets}
-            setActiveWallet={this.props.setActiveWallet}
-            addWallet={this.props.addWallet}
-            reloadWallet={this.reloadWallet}
-          />
-        </React.Fragment>
-
-      );
-    }
+    ) as any;
   };
-
-  return connect(
-    state => {
-      return ({
-        wallet: activeWalletSelector(state),
-        wallets: state.config.wallets,
-      })
-    },
-    ({ config: { setActiveWallet, addWallet, }, wallet: { reloadWallet } }) => ({
-      setActiveWallet,
-      addWallet,
-      reloadWallet,
-    }),
-    null,
-    { pure: false },
-  )(wrappedComponent);
 }

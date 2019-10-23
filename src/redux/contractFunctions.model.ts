@@ -1,5 +1,6 @@
+import { createModel } from "@rematch/core";
 
-export const contractFunctions = {
+export const contractFunctions = createModel({
   state: {
     contractCalls: [],
   },
@@ -11,4 +12,4 @@ export const contractFunctions = {
       };
     },
   },
-};
+});

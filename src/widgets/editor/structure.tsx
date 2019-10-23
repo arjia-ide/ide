@@ -7,8 +7,9 @@ import {debounce, last} from "lodash";
 import {activeFileCode, activeFileExtension} from "../../redux/ide.selectors";
 
 @withApi
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     projects: state.ide.projects,
     activeProject: state.ide.projects[state.ide.activeProject],
     files: state.ide.projects[state.ide.activeProject].files,
@@ -16,7 +17,7 @@ import {activeFileCode, activeFileExtension} from "../../redux/ide.selectors";
     activeFileName: activeFileExtension(state),
     activeFileCode: activeFileCode(state),
   }),
-  ({ ide }) => ({
+  ({ ide }: any) => ({
     updateFile: ide.updateFile,
     addFile: ide.addFile
   }),
@@ -28,6 +29,10 @@ export default class Structure extends React.Component<any, any> {
   };
 
   id = 1;
+
+  reload = debounce(() => {
+    this.load();
+  }, 300);
 
   constructor(props) {
     super(props);
@@ -42,10 +47,6 @@ export default class Structure extends React.Component<any, any> {
      this.reload();
     }
   }
-
-  reload = debounce(() => {
-    this.load();
-  }, 300);
 
   load = async () => {
 
@@ -75,11 +76,11 @@ export default class Structure extends React.Component<any, any> {
 
       this.setState({
         nodes,
-      })
+      });
     } catch (e) {
       console.error(e);
     }
-  };
+  }
 
   check = (item) => {
     if (item.childNodes && item.childNodes.length === 0) {
@@ -87,7 +88,7 @@ export default class Structure extends React.Component<any, any> {
     }
 
     return item;
-  };
+  }
 
   buildNode = (node) => {
 
@@ -150,17 +151,29 @@ export default class Structure extends React.Component<any, any> {
         label: node.name,
       });
     }
-  };
+  }
 
-  private handleNodeClick = (nodeData: ITreeNode, _nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
+  render() {
+    return (
+      <Tree
+        contents={this.state.nodes}
+        onNodeClick={this.handleNodeClick}
+        onNodeCollapse={this.handleNodeCollapse}
+        onNodeExpand={this.handleNodeExpand}
+        // className={Classes.ELEVATION_0}
+      />
+    );
+  }
+
+  private handleNodeClick = (nodeData: ITreeNode, nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
     if (!e.shiftKey) {
       this.forEachNode(this.state.nodes, n => (n.isSelected = false));
     }
-    nodeData.isSelected = true; //originallySelected == null ? true : !originallySelected;
+    nodeData.isSelected = true; // originallySelected == null ? true : !originallySelected;
 
     // this.props.setActiveFile(nodeData.id);
     this.setState(this.state);
-  };
+  }
 
   private forEachNode(nodes: ITreeNode[], callback: (node: ITreeNode) => void) {
     if (nodes == null) {
@@ -176,23 +189,11 @@ export default class Structure extends React.Component<any, any> {
   private handleNodeCollapse = (nodeData: ITreeNode) => {
     nodeData.isExpanded = false;
     this.setState(this.state);
-  };
+  }
 
   private handleNodeExpand = (nodeData: ITreeNode) => {
     nodeData.isExpanded = true;
     this.setState(this.state);
-  };
-
-  render() {
-    return (
-      <Tree
-        contents={this.state.nodes}
-        onNodeClick={this.handleNodeClick}
-        onNodeCollapse={this.handleNodeCollapse}
-        onNodeExpand={this.handleNodeExpand}
-        // className={Classes.ELEVATION_0}
-      />
-    )
   }
 
 }

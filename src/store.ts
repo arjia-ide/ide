@@ -1,8 +1,8 @@
 import thunk from 'redux-thunk';
-import {init} from "@rematch/core"
-import selectPlugin from '@rematch/select'
-import createLoadingPlugin from '@rematch/loading'
-import createRematchPersist from '@rematch/persist'
+import {init} from "@rematch/core";
+import selectPlugin from '@rematch/select';
+import createLoadingPlugin from '@rematch/loading';
+import createRematchPersist from '@rematch/persist';
 import * as models from "./redux/models";
 import localForage from 'localforage';
 import {config} from "./configuration";
@@ -19,6 +19,7 @@ const persistPlugin = createRematchPersist({
   throttle: config.persistence.saveThrottle,
   version: 1,
   storage: localForage,
+  debug: true,
 });
 
 export function configureStore() {

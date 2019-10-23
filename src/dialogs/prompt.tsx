@@ -3,7 +3,6 @@ import {Button, Classes, Dialog, InputGroup, Intent} from "@blueprintjs/core";
 
 export default class Prompt extends React.Component<any, any> {
 
-
   constructor(props) {
     super(props);
 
@@ -16,7 +15,7 @@ export default class Prompt extends React.Component<any, any> {
     if (ev.keyCode === 13) {
       this.props.onConfirm(this.state.value);
     }
-  };
+  }
 
   render() {
     return (

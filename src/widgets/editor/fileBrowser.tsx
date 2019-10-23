@@ -3,7 +3,6 @@
  *
  * Licensed under the terms of the LICENSE file distributed with this project.
  */
-
 import * as React from "react";
 import {connect} from "react-redux";
 
@@ -24,48 +23,26 @@ export interface ITreeExampleState {
   id: number;
 }
 
-// use Component so it re-renders everytime: `nodes` are not a primitive type
-// and therefore aren't included in shallow prop comparison
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     projects: state.ide.projects,
     activeProject: state.ide.projects[state.ide.activeProject],
     files: state.ide.projects[state.ide.activeProject].files,
     activeFile: state.ide.activeFile,
   }),
-  ({ ide }) => ({
+  ({ ide }: any) => ({
     addFile: ide.addFile,
     removeFile: ide.removeFile,
     setActiveFile: ide.setActiveFile,
   }),
 )
 export default class FileBrowser extends React.Component<any, ITreeExampleState> {
-  public state: ITreeExampleState = {
-    nodes: INITIAL_STATE,
-    id: 3,
-  };
-
-
-  addFile = () => {
-
-    this.props.addFile({
-      file: {
-        contents: '',
-        name: 'file.sol'
-      }
-    });
-  };
-
-  deleteFile = () => {
-    this.props.removeFile({
-      file: this.props.activeFile
-    });
-  };
 
   static getDerivedStateFromProps(props, state) {
     return {
       ...state,
-      nodes: Object.values(props.files).map((file: any)=> ({
+      nodes: Object.values(props.files).map((file: any) => ({
         id: file.id,
         label: file.name,
         icon: "document",
@@ -80,36 +57,26 @@ export default class FileBrowser extends React.Component<any, ITreeExampleState>
       })),
     };
   }
-
-  private handleNodeClick = (nodeData: ITreeNode, _nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
-    if (!e.shiftKey) {
-      this.forEachNode(this.state.nodes, n => (n.isSelected = false));
-    }
-    nodeData.isSelected = true; //originallySelected == null ? true : !originallySelected;
-
-    this.props.setActiveFile(nodeData.id);
-    // this.setState(this.state);
+  public state: ITreeExampleState = {
+    nodes: INITIAL_STATE,
+    id: 3,
   };
 
-  private handleNodeCollapse = (nodeData: ITreeNode) => {
-    nodeData.isExpanded = false;
-    this.setState(this.state);
-  };
 
-  private handleNodeExpand = (nodeData: ITreeNode) => {
-    nodeData.isExpanded = true;
-    this.setState(this.state);
-  };
+  addFile = () => {
 
-  private forEachNode(nodes: ITreeNode[], callback: (node: ITreeNode) => void) {
-    if (nodes == null) {
-      return;
-    }
+    this.props.addFile({
+      file: {
+        contents: '',
+        name: 'file.sol'
+      }
+    });
+  }
 
-    for (const node of nodes) {
-      callback(node);
-      this.forEachNode(node.childNodes, callback);
-    }
+  deleteFile = () => {
+    this.props.removeFile({
+      file: this.props.activeFile
+    });
   }
 
   public render() {
@@ -130,6 +97,37 @@ export default class FileBrowser extends React.Component<any, ITreeExampleState>
         />
       </React.Fragment>
     );
+  }
+
+  private handleNodeClick = (nodeData: ITreeNode, nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
+    if (!e.shiftKey) {
+      this.forEachNode(this.state.nodes, n => (n.isSelected = false));
+    }
+    nodeData.isSelected = true; // originallySelected == null ? true : !originallySelected;
+
+    this.props.setActiveFile(nodeData.id);
+    // this.setState(this.state);
+  }
+
+  private handleNodeCollapse = (nodeData: ITreeNode) => {
+    nodeData.isExpanded = false;
+    this.setState(this.state);
+  }
+
+  private handleNodeExpand = (nodeData: ITreeNode) => {
+    nodeData.isExpanded = true;
+    this.setState(this.state);
+  }
+
+  private forEachNode(nodes: ITreeNode[], callback: (node: ITreeNode) => void) {
+    if (nodes == null) {
+      return;
+    }
+
+    for (const node of nodes) {
+      callback(node);
+      this.forEachNode(node.childNodes, callback);
+    }
   }
 }
 

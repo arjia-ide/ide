@@ -1,37 +1,34 @@
-import React from "react";
-import {connect} from "react-redux";
-import {activeNetworkSelector} from "../redux/config.selectors";
+import React, { ComponentType } from "react";
+import { connect } from "react-redux";
+import { activeNetworkSelector } from "../redux/config.selectors";
 
-export function withNetwork(InnerComponent) {
+export function withNetwork<T extends ComponentType>(InnerComponent: T): T {
 
-  const wrappedComponent = class extends React.Component<any, any> {
+  const wrappedComponent = function WrappedComponent(props: any) {
 
-    render() {
+    return (
+      <React.Fragment>
+        <InnerComponent
+          {...props}
+          network={props.network}
+          networks={props.networks}
+          setActiveNetwork={props.setActiveNetwork}
+        />
+      </React.Fragment>
 
-      return (
-        <React.Fragment>
-          <InnerComponent
-            {...this.props}
-            network={this.props.network}
-            networks={this.props.networks}
-            setActiveNetwork={this.props.setActiveNetwork}
-          />
-        </React.Fragment>
-
-      );
-    }
+    );
   };
 
   return connect(
-    state => ({
+    (state: any) => ({
       network: activeNetworkSelector(state),
       activeNetwork: state.config.activeNetwork,
       networks: state.config.networks,
     }),
-    ({ config: { setActiveNetwork } }) => ({
+    ({ config: { setActiveNetwork } }: any) => ({
       setActiveNetwork
     }),
     null,
     { pure: false },
-  )(wrappedComponent);
+  )(wrappedComponent) as any;
 }

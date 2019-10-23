@@ -13,11 +13,11 @@ export default class TxHash extends React.Component<TxHashProps, any> {
     super(props);
 
     this.state = {};
-  };
+  }
 
   copy = () => {
     copy(this.props.hash);
-  };
+  }
 
   buildPopup = () => {
 
@@ -36,8 +36,8 @@ export default class TxHash extends React.Component<TxHashProps, any> {
         </p>
         <p>{hash}</p>
       </Card>
-    )
-  };
+    );
+  }
 
 
   render() {
@@ -55,6 +55,6 @@ export default class TxHash extends React.Component<TxHashProps, any> {
           </Tag>
       </Popover>
 
-    )
+    );
   }
 }

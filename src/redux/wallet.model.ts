@@ -1,7 +1,8 @@
 import {activeNetworkSelector} from "./config.selectors";
 import TronWeb from "tronweb";
+import { createModel } from "@rematch/core";
 
-export const wallet = {
+export const wallet = createModel({
   state: {
 
   },
@@ -30,4 +31,4 @@ export const wallet = {
       });
     },
   })
-};
+});
