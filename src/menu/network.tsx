@@ -8,7 +8,7 @@ export default function NetworkMenu() {
   const dispatch = useDispatch<any>();
 
   const changeNetwork = useCallback((networkId) => {
-    dispatch.network.setActiveNetwork(networkId);
+    dispatch.config.setActiveNetwork(networkId);
     dispatch.wallet.reloadWallet();
   }, []);
 

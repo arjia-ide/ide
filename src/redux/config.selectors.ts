@@ -67,7 +67,7 @@ export const activeWalletSelector = state => {
       return {
         name: 'Extension',
         // @ts-ignore
-        address: window.tronWeb.defaultAddress.base58,
+        address: window.tronWeb.defaultAddress.base58 || "No open wallet",
         privateKey: null,
       };
     }
