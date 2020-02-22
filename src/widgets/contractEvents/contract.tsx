@@ -1,11 +1,11 @@
 import React, {Fragment} from "react";
 import {Button, ControlGroup, InputGroup, NonIdealState} from "@blueprintjs/core";
-import {ContractEventStream} from "@trx/core/dist/blockchain/contract/contractEventStream"
+import {ContractEventStream} from "@trx/core/dist/blockchain/contract/contractEventStream";
 import {Cell, Column, Table} from "@blueprintjs/table";
 import {bufferTime, map} from "rxjs/operators";
 import {filter} from "lodash";
-import HttpApi from "@trx/core/dist/clients/http"
-import {extractSmartContractInputs, filterContractType} from "@trx/core/dist/clients/http/utils"
+import HttpApi from "@trx/core/dist/clients/http";
+import {extractSmartContractInputs, filterContractType} from "@trx/core/dist/clients/http/utils";
 import AddressInput from "../../components/utils/addressInput";
 import {isAddress} from "@trx/core/dist/utils/utils";
 import {withNetwork} from "../../hoc/withNetwork";
@@ -15,17 +15,17 @@ import {withRouter} from "react-router-dom";
 const cellRenderer = (data, headerName) => (rowIndex) => {
 
   if (!data[rowIndex] || !data[rowIndex] || typeof data[rowIndex][headerName] === 'undefined') {
-    return <Cell>&nbsp;</Cell>
+    return <Cell>&nbsp;</Cell>;
   }
 
-  return <Cell>{data[rowIndex][headerName]}</Cell>
+  return <Cell>{data[rowIndex][headerName]}</Cell>;
 };
 
 @withRouter
 @withNetwork
 export default class ContractEvents extends React.Component<any, any> {
 
-  private expressionEvaluator: Function;
+  private expressionEvaluator: any;
 
   constructor(props) {
     super(props);
@@ -42,7 +42,7 @@ export default class ContractEvents extends React.Component<any, any> {
       methodNames: {},
       filterEvent: null,
     };
-  };
+  }
 
   componentDidMount(): void {
     if (this.props.match.params.id) {
@@ -72,8 +72,8 @@ export default class ContractEvents extends React.Component<any, any> {
           contractAddress: address,
           loaded: true,
           isLoading: false,
-          methodNames: contract.getEvents().reduce((map, { name }) => ({
-            ...map,
+          methodNames: contract.getEvents().reduce((m, { name }) => ({
+            ...m,
             [name]: name
           }), {}),
           filterEvent: contract.getEvents().map(x => x.name)[0],
@@ -103,16 +103,17 @@ export default class ContractEvents extends React.Component<any, any> {
         });
         break;
     }
-  };
+  }
 
   buildEventSubscriber() {
     return events => {
-      if (events.length === 0)
+      if (events.length === 0) {
         return;
+      }
 
       const methodNames = {};
 
-      for (let ev of events) {
+      for (const ev of events) {
         methodNames[ev.name] = ev.name;
       }
 
@@ -162,7 +163,7 @@ export default class ContractEvents extends React.Component<any, any> {
         headers: Object.keys(filteredEvents[0]),
       });
     }
-  };
+  }
 
   getFilteredRows = (rows) => {
 
@@ -187,7 +188,7 @@ export default class ContractEvents extends React.Component<any, any> {
     }
 
     return rows;
-  };
+  }
 
   isValidRow = (ev) => {
 
@@ -200,7 +201,7 @@ export default class ContractEvents extends React.Component<any, any> {
     }
 
     return true;
-  };
+  }
 
   renderTable() {
 
@@ -217,14 +218,14 @@ export default class ContractEvents extends React.Component<any, any> {
           headers.map(header => <Column name={header} cellRenderer={cellRenderer(rows, header)}/>)
         }
       </Table>
-    )
+    );
   }
 
   onSearchKeyDown = (ev) => {
     if (ev.keyCode === 13) {
       this.refreshRows();
     }
-  };
+  }
 
   render() {
 
@@ -251,7 +252,7 @@ export default class ContractEvents extends React.Component<any, any> {
             </ControlGroup>
           }
         />
-      )
+      );
     }
 
     return (
@@ -283,7 +284,7 @@ export default class ContractEvents extends React.Component<any, any> {
           {this.renderTable()}
         </div>
       </Fragment>
-    )
+    );
   }
 
 }

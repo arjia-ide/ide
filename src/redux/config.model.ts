@@ -1,10 +1,11 @@
 import {newId} from "../utils/common";
 import Wallet from '@trx/core/dist/blockchain/wallet/wallet';
 import {omit} from "lodash";
+import { createModel } from "@rematch/core";
 
 const initialWallet = Wallet.create();
 
-export const config = {
+export const config = createModel({
   state: {
     wallets: {
       [initialWallet.address]: {
@@ -14,18 +15,18 @@ export const config = {
       }
     },
     networks: {
-      'extension': {
+      extension: {
         id: 'extension',
         name: 'Extension',
       },
-      'mainnet': {
+      mainnet: {
         id: 'mainnet',
         name: 'Mainnet',
         fullNodeUrl: 'https://api.trongrid.io',
         solidityNodeUrl: 'https://api.trongrid.io',
         eventServerUrl: 'https://api.trongrid.io',
       },
-      'shasta': {
+      shasta: {
         id: 'shasta',
         name: 'Shasta',
         fullNodeUrl: 'https://api.shasta.trongrid.io',
@@ -113,4 +114,4 @@ export const config = {
       };
     },
   },
-};
+});

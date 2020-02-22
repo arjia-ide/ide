@@ -4,37 +4,6 @@ import {withRouter} from "react-router";
 
 class PageNav extends React.Component<any, any> {
 
-  private renderOverflow = (items) => {
-    const position =  Position.BOTTOM_RIGHT;
-    return (
-      <li>
-        <Popover position={position}>
-          <span className={Classes.BREADCRUMBS_COLLAPSED} />
-          <Menu>{items.map(this.renderOverflowBreadcrumb)}</Menu>
-        </Popover>
-      </li>
-    );
-  };
-
-  private renderOverflowBreadcrumb = (props, index: number) => {
-    const isClickable = props.href != null || props.onClick != null;
-    return <MenuItem disabled={!isClickable} {...props} text={props.text} key={index} />;
-  };
-
-  private renderBreadcrumbItem = ({ name, type, id, icon, url }) => {
-    return (
-      <Button text={name} minimal={true} icon={icon || 'code'} onClick={() => this.props.history.push('/' + url)} />
-    );
-  };
-
-  private renderBreadcrumbWrapper = (props, index: number) => {
-    return (
-      <li key={index}>
-        {this.renderBreadcrumbItem(props)}
-      </li>
-    );
-  };
-
 
   render() {
     return (
@@ -47,6 +16,37 @@ class PageNav extends React.Component<any, any> {
             items={this.props.tabs} />
         </div>
       </nav>
+    );
+  }
+
+  private renderOverflow = (items) => {
+    const position =  Position.BOTTOM_RIGHT;
+    return (
+      <li>
+        <Popover position={position}>
+          <span className={Classes.BREADCRUMBS_COLLAPSED} />
+          <Menu>{items.map(this.renderOverflowBreadcrumb)}</Menu>
+        </Popover>
+      </li>
+    );
+  }
+
+  private renderOverflowBreadcrumb = (props, index: number) => {
+    const isClickable = props.href != null || props.onClick != null;
+    return <MenuItem disabled={!isClickable} {...props} text={props.text} key={index} />;
+  }
+
+  private renderBreadcrumbItem = ({ name, type, id, icon, url }) => {
+    return (
+      <Button text={name} minimal={true} icon={icon || 'code'} onClick={() => this.props.history.push('/' + url)} />
+    );
+  }
+
+  private renderBreadcrumbWrapper = (props, index: number) => {
+    return (
+      <li key={index}>
+        {this.renderBreadcrumbItem(props)}
+      </li>
     );
   }
 

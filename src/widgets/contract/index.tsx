@@ -5,15 +5,16 @@ import WidgetBase from "../widgetBase";
 import ContractFunctions from "./contractFunctions";
 import ContractFunctionsLog from "./contractFunctionsLog";
 
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     projects: state.ide.projects,
     activeProject: state.ide.projects[state.ide.activeProject],
     files: state.ide.projects[state.ide.activeProject].files,
     activeFile: state.ide.activeFile,
     contractCalls: state.contractFunctions.contractCalls,
   }),
-  ({ ide, contractFunctions: { addContractCall } }) => ({
+  ({ ide, contractFunctions: { addContractCall } }: any) => ({
     updateFile: ide.updateFile,
     addFile: ide.addFile,
     addContractCall,
@@ -28,10 +29,6 @@ export default class ContractWidget extends React.Component<any, any> {
 
     this.state = {
     };
-  };
-
-  componentDidMount() {
-
   }
 
   handleClose = () => {
@@ -39,11 +36,11 @@ export default class ContractWidget extends React.Component<any, any> {
       modal: null,
       events: [],
     });
-  };
+  }
 
   setContract = (contract) => {
     console.log(contract);
-  };
+  }
 
   renderWidget = (id) => {
     switch (id) {
@@ -63,10 +60,10 @@ export default class ContractWidget extends React.Component<any, any> {
             <ContractFunctionsLog
             />
           )
-        }
+        };
       }
     }
-  };
+  }
 
 
   renderMenu() {
@@ -100,6 +97,6 @@ export default class ContractWidget extends React.Component<any, any> {
           }}
         />
       </Fragment>
-    )
+    );
   }
 }

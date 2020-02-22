@@ -1,5 +1,4 @@
 import {
-  AnchorButton,
   Button,
   Classes,
   Icon,
@@ -98,7 +97,7 @@ export default class MainWrap extends React.PureComponent<any, State> {
       3: new Widget("Contract", ContractWidget),
       4: new Widget("Contract Events", ContractEventsWidget),
       5: new Widget("Transaction Viewer", TransactionViewer),
-    }
+    };
   }
 
   componentDidMount(): void {
@@ -108,11 +107,34 @@ export default class MainWrap extends React.PureComponent<any, State> {
 
   refresh = () => {
     this.props.reloadWallet();
-  };
+  }
+
+  render() {
+
+    const { tabs } = this.state;
+
+    return (
+      <React.Fragment>
+        <OmnibarWidget/>
+        {this.renderNavBar()}
+        <Switch>
+          {
+            Object.values(tabs).map(tab => (
+              <Route
+                key={tab.id}
+                path={"/" + (tab.route || tab.url)}
+                component={this.widgets[tab.id].buildComponent()} />
+            ))
+          }
+          <Route component={Home} />
+        </Switch>
+      </React.Fragment>
+    );
+  }
 
   private renderNavBar() {
 
-    const {tabs, currentTab} = this.state;
+    const { tabs } = this.state;
     const { history } = this.props;
 
     return (
@@ -163,29 +185,6 @@ export default class MainWrap extends React.PureComponent<any, State> {
           <NetworkMenu/>
         </div>
       </nav>
-    );
-  }
-
-  render() {
-
-    const { tabs } = this.state;
-
-    return (
-      <React.Fragment>
-        <OmnibarWidget/>
-        {this.renderNavBar()}
-        <Switch>
-          {
-            Object.values(tabs).map(tab => (
-              <Route
-                key={tab.id}
-                path={"/" + (tab.route || tab.url)}
-                component={this.widgets[tab.id].buildComponent()} />
-            ))
-          }
-          <Route component={Home} />
-        </Switch>
-      </React.Fragment>
     );
   }
 }

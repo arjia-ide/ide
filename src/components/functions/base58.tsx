@@ -59,7 +59,7 @@ export function Base58Func() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 

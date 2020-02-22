@@ -3,7 +3,7 @@ import {newId} from "../utils/common";
 import {IActionHandler} from "../components/omnibar/actions/actionHandler";
 
 
-let actions: { [key: string]: IActionHandler } = {};
+const actions: { [key: string]: IActionHandler } = {};
 
 export function getOmnibarHooks() {
   return Object.values(actions);

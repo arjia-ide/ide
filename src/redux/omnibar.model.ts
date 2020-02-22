@@ -1,5 +1,6 @@
+import { createModel } from "@rematch/core";
 
-export const omnibar = {
+export const omnibar = createModel({
   state: {
     isOpen: false,
   },
@@ -17,4 +18,4 @@ export const omnibar = {
       };
     },
   },
-};
+});

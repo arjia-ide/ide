@@ -54,7 +54,7 @@ export function AsciiFunc() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 

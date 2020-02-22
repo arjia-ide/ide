@@ -16,7 +16,7 @@ export default class TransactionViewer extends React.Component<any, any> {
       events: [],
       isLoading: false,
     };
-  };
+  }
 
   componentDidMount() {
 
@@ -57,7 +57,7 @@ export default class TransactionViewer extends React.Component<any, any> {
             title="Transaction Details"
             description="Input a transaction hash" />
         </div>
-      )
+      );
 
     }
 
@@ -65,7 +65,7 @@ export default class TransactionViewer extends React.Component<any, any> {
         <div style={{ height: 'calc(100% - 50px)', overflowY: 'auto' }}>
           <TransactionDetails hash={hash} />
         </div>
-    )
+    );
   }
 
   render() {
@@ -82,7 +82,7 @@ export default class TransactionViewer extends React.Component<any, any> {
         </nav>
         {this.renderBody()}
       </Fragment>
-    )
+    );
   }
 
 }

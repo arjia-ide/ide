@@ -2,7 +2,7 @@ import React from "react";
 import TronWeb from "tronweb";
 import TxHash from "./utils/txHash";
 import {Card, Intent, Navbar, Spinner, Tab, Tabs, Tag} from "@blueprintjs/core";
-import HttpApi from "@trx/core/dist/clients/http"
+import HttpApi from "@trx/core/dist/clients/http";
 import Address from "./utils/address";
 import {wait} from "../utils/promise";
 import {withNetwork} from "../hoc/withNetwork";
@@ -33,7 +33,7 @@ interface TransactionProps {
   network?: Network;
 }
 
-
+// @ts-ignore
 @withNetwork
 export default class TransactionDetails extends React.Component<TransactionProps, TransactionState> {
 
@@ -48,7 +48,7 @@ export default class TransactionDetails extends React.Component<TransactionProps
       pages: [],
       smartContractInput: null,
     };
-  };
+  }
 
   componentDidMount() {
     const { hash } = this.props;
@@ -82,8 +82,8 @@ export default class TransactionDetails extends React.Component<TransactionProps
       const smartContractInput = await httpApi.getSmartContractInputFromTransaction(transaction);
 
       this.setState({
-        transaction: transaction,
-        transactionInfo: transactionInfo,
+        transaction,
+        transactionInfo,
         smartContractInput,
         events: transactionInfo.getEventLog(),
       });
@@ -92,11 +92,15 @@ export default class TransactionDetails extends React.Component<TransactionProps
     }
 
     return false;
-  };
+  }
 
   loadTransaction = async (hash) => {
 
-    let {attempts = 5, delay = 3000, initialDelay = 0} = this.props;
+    let {
+      attempts = 5,
+      delay = 3000,
+      initialDelay = 0,
+    } = this.props;
 
     this.setState({ isLoading: true });
 
@@ -122,14 +126,14 @@ export default class TransactionDetails extends React.Component<TransactionProps
 
       await wait(delay);
     }
-  };
+  }
 
   handleClose = () => {
     this.setState({
       modal: null,
       events: [],
     });
-  };
+  }
 
   renderEvents() {
     const {events} = this.state;
@@ -170,7 +174,7 @@ export default class TransactionDetails extends React.Component<TransactionProps
     if (TronWeb.isAddress(value)) {
       return (
         <Address address={value}/>
-      )
+      );
     }
 
     if (isObject(value)) {
@@ -180,11 +184,11 @@ export default class TransactionDetails extends React.Component<TransactionProps
             {JSON.stringify(value, null, 2)}
           </code>
         </pre>
-      )
+      );
     }
 
     return value.toString();
-  };
+  }
 
   renderPages = () => {
     const {
@@ -194,7 +198,7 @@ export default class TransactionDetails extends React.Component<TransactionProps
       smartContractInput
     } = this.state;
 
-    let pages = [];
+    const pages = [];
 
     if (transaction) {
       pages.push({
@@ -300,7 +304,7 @@ export default class TransactionDetails extends React.Component<TransactionProps
                 transactionInfo.receipt.result &&
                   <tr>
                     <td>Result</td>
-                    <td><Tag intent={transactionInfo.receipt.result == 'SUCCESS' ? Intent.SUCCESS : Intent.PRIMARY}>{transactionInfo.receipt.result}</Tag></td>
+                    <td><Tag intent={transactionInfo.receipt.result === 'SUCCESS' ? Intent.SUCCESS : Intent.PRIMARY}>{transactionInfo.receipt.result}</Tag></td>
                   </tr>
               }
             </tbody>
@@ -310,7 +314,7 @@ export default class TransactionDetails extends React.Component<TransactionProps
     }
 
     return pages;
-  };
+  }
 
   render() {
 
@@ -348,7 +352,7 @@ export default class TransactionDetails extends React.Component<TransactionProps
             transactionInfo.result &&
               <tr>
                 <th>{tu("result")}</th>
-                <td><Tag intent={transactionInfo.result == 'FAILED' ? Intent.DANGER : Intent.PRIMARY}>{transactionInfo.result}</Tag></td>
+                <td><Tag intent={transactionInfo.result === 'FAILED' ? Intent.DANGER : Intent.PRIMARY}>{transactionInfo.result}</Tag></td>
               </tr>
           }
           {
@@ -362,7 +366,7 @@ export default class TransactionDetails extends React.Component<TransactionProps
             transactionInfo.receipt &&
               <tr>
                 <th>Receipt Result</th>
-                <td><Tag intent={transactionInfo.receipt.result == 'SUCCESS' ? Intent.SUCCESS : Intent.PRIMARY}>{transactionInfo.receipt.result}</Tag></td>
+                <td><Tag intent={transactionInfo.receipt.result === 'SUCCESS' ? Intent.SUCCESS : Intent.PRIMARY}>{transactionInfo.receipt.result}</Tag></td>
               </tr>
           }
           {
@@ -401,7 +405,7 @@ export default class TransactionDetails extends React.Component<TransactionProps
           </Tabs>
         </Card>
       </div>
-    )
+    );
   }
 
 }

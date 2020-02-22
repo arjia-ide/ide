@@ -1,26 +1,26 @@
 /* eslint-disable no-undef */
 
-import solc from 'solc/wrapper';
+import solc from "solc/wrapper";
 
-function loadScript(name, url, callback){
+function loadScript(name, url, callback) {
   var script = document.getElementById("script-" + name);
   if (script != null) {
     script.parentElement.removeChild(script);
   }
 
-  script = document.createElement("script")
+  script = document.createElement("script");
   script.type = "text/javascript";
   script.setAttribute("id", "script-" + name);
 
-  if (script.readyState){  //IE
-    script.onreadystatechange = function(){
+  if (script.readyState) {  //IE
+    script.onreadystatechange = function() {
       if (script.readyState === "loaded" || script.readyState === "complete") {
         script.onreadystatechange = null;
         callback();
       }
     };
   } else {  //Others
-    script.onload = function(){
+    script.onload = function() {
       callback();
     };
   }
@@ -59,6 +59,5 @@ export function getVersions(callback) {
     callback(soljsonSources, soljsonReleases);
   });
 }
-
 
 // @ts-ignore-end

@@ -42,6 +42,6 @@ export default class ContractDeployer {
 
     return {
       contractAddress: TronWeb.address.fromHex(transactionInfo.contract_address),
-    }
+    };
   }
 }

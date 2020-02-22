@@ -1,5 +1,5 @@
 import React from "react";
-import {FormGroup, InputGroup, Menu, MenuDivider, MenuItem} from "@blueprintjs/core";
+import {Menu, MenuDivider, MenuItem} from "@blueprintjs/core";
 import * as Funcs from "./funcs";
 import {groupBy} from "lodash";
 import {Switch, Route, withRouter} from "react-router";
@@ -66,7 +66,7 @@ export default class FunctionsWidget extends React.Component<any, any> {
           </Switch>
         </div>
       </div>
-    )
+    );
   }
 
 }

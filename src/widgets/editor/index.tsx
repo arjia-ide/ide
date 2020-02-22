@@ -48,15 +48,16 @@ const PANEL_STRUCTURE = 4;
 @withApi
 @withDialogs
 @withRouter
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     projects: state.ide.projects,
     activeProject: state.ide.projects[state.ide.activeProject],
     files: state.ide.projects[state.ide.activeProject].files,
     activeFile: state.ide.activeFile,
     panelVisibility: state.ide.panels,
   }),
-  ({ ide }) => ({
+  ({ ide }: any) => ({
     updateFile: ide.updateFile,
     addFile: ide.addFile,
     changeProjectName: ide.changeProjectName,
@@ -99,7 +100,7 @@ export default class SolidityCode extends React.Component<any, any> {
 
     // @ts-ignore
     this.state.node = this.buildPanels(this.state.panels);
-  };
+  }
 
   getOmnibarActions({ addFile }): IActionHandler {
     return {
@@ -121,13 +122,13 @@ export default class SolidityCode extends React.Component<any, any> {
         ];
       }
     };
-  };
+  }
 
   componentDidMount() {
     // @ts-ignore
     BrowserSolc.getVersions((soljsonSources, soljsonReleases) => {
 
-      for (let versionNumber of Object.keys(soljsonReleases)) {
+      for (const versionNumber of Object.keys(soljsonReleases)) {
         soljsonReleases[versionNumber] = `https://ethereum.github.io/solc-bin/bin/${soljsonReleases[versionNumber]}`;
       }
 
@@ -151,7 +152,7 @@ export default class SolidityCode extends React.Component<any, any> {
       // @ts-ignore
       BrowserSolc.loadScriptVersion(version, resolve);
     });
-  };
+  }
 
 
   getEditorRange = (contents, start, end) => {
@@ -188,7 +189,7 @@ export default class SolidityCode extends React.Component<any, any> {
       startPos,
       endPos
     };
-  };
+  }
 
   getSelectedConract = () => {
     const {output, selectedContract} = this.state;
@@ -196,14 +197,14 @@ export default class SolidityCode extends React.Component<any, any> {
     const [file, contractName] = selectedContract.split(";");
 
     return output.contracts[file][contractName];
-  };
+  }
 
   compile = async () => {
 
     const {solidityVersion, soljsonReleases} = this.state;
     const {files} = this.props;
 
-    let sources = {};
+    const sources = {};
 
 
     function findImports(path) {
@@ -219,9 +220,9 @@ export default class SolidityCode extends React.Component<any, any> {
       this.setState({loadingCompile: true});
 
 
-      let fileList: any = Object.values(files);
+      const fileList: any = Object.values(files);
 
-      for (let file of fileList) {
+      for (const file of fileList) {
         if (file.name.endsWith(".sol")) {
           sources[file.name] = {
             content: file.contents,
@@ -266,7 +267,7 @@ export default class SolidityCode extends React.Component<any, any> {
           intent: Intent.SUCCESS,
         });
 
-        this.setState(state => ({
+        this.setState((state: any) => ({
           output,
           deployOptions: {
             ...state.deployOptions,
@@ -289,7 +290,7 @@ export default class SolidityCode extends React.Component<any, any> {
         loadingCompile: false
       });
     }
-  };
+  }
 
   deployContract = async () => {
 
@@ -347,14 +348,14 @@ export default class SolidityCode extends React.Component<any, any> {
     } finally {
       this.setState({loadingDeploy: false});
     }
-  };
+  }
 
   handleClose = () => {
     this.setState({
       modal: null,
       events: [],
     });
-  };
+  }
 
 
   setDeployOption = (options) => {
@@ -364,7 +365,7 @@ export default class SolidityCode extends React.Component<any, any> {
         ...options,
       }
     }));
-  };
+  }
 
   renderLoadingDeployment = () => {
     this.setState({
@@ -382,8 +383,8 @@ export default class SolidityCode extends React.Component<any, any> {
           </div>
         </Dialog>
       )
-    })
-  };
+    });
+  }
 
   renderDeploymentSuccess = (contractAddress, txId) => {
     this.setState({
@@ -408,8 +409,8 @@ export default class SolidityCode extends React.Component<any, any> {
           </div>
         </Dialog>
       )
-    })
-  };
+    });
+  }
 
   // renderImportFiles = () => {
   //   this.setState({
@@ -547,8 +548,8 @@ export default class SolidityCode extends React.Component<any, any> {
           </div>
         </Dialog>
       )
-    })
-  };
+    });
+  }
 
   renderDeployBar() {
     const {output, loadingDeploy} = this.state;
@@ -614,7 +615,7 @@ export default class SolidityCode extends React.Component<any, any> {
           widgetBodyProps: {},
         };
     }
-  };
+  }
 
   changeProjectName = async () => {
     const {activeProject} = this.props;
@@ -625,7 +626,7 @@ export default class SolidityCode extends React.Component<any, any> {
       id: activeProject.id,
       name: newName,
     });
-  };
+  }
 
   createProject = async () => {
 
@@ -648,7 +649,7 @@ export default class SolidityCode extends React.Component<any, any> {
     });
 
     setActiveProject(id);
-  };
+  }
 
   importGistUrl = async (url) => {
 
@@ -682,12 +683,12 @@ export default class SolidityCode extends React.Component<any, any> {
       this.handleClose();
     }
 
-  };
+  }
 
   importGist = async () => {
     const gistUrl = await this.props.prompt("Gist URL");
     await this.importGistUrl(gistUrl);
-  };
+  }
 
 
   deleteProject = async (project) => {
@@ -702,17 +703,17 @@ export default class SolidityCode extends React.Component<any, any> {
     })) {
       this.props.deleteProject(project.id);
     }
-  };
+  }
 
   publishToGithub = (project: any) => {
 
-    let gist = {
+    const gist = {
       public: false,
       description: "Arjia: " + project.name,
       files: {}
     };
 
-    for (let file of Object.values(project.files)) {
+    for (const file of Object.values(project.files)) {
       // @ts-ignore
       gist.files[file.name] = {
         // @ts-ignore
@@ -728,7 +729,7 @@ export default class SolidityCode extends React.Component<any, any> {
         />
       )
     });
-  };
+  }
 
 
   renderProjectPopup() {
@@ -769,8 +770,8 @@ export default class SolidityCode extends React.Component<any, any> {
                   text="Publish Gist"
                   onClick={() => this.publishToGithub(activeProject)} />
       </Menu>
-    )
-  };
+    );
+  }
 
   renderMenu() {
     const {soljsonReleases, loadingCompile, solidityVersion, panels} = this.state;
@@ -809,7 +810,7 @@ export default class SolidityCode extends React.Component<any, any> {
           <div className="bp3-select">
             <select
               value={solidityVersion}
-              onChange={ev => { this.setState({solidityVersion: ev.target.value}) }}>
+              onChange={ev => { this.setState({solidityVersion: ev.target.value}); }}>
               {
                 // @ts-ignore
                 Object.keys(soljsonReleases).map((release) => (
@@ -893,6 +894,6 @@ export default class SolidityCode extends React.Component<any, any> {
           node={this.state.node}
         />
       </Fragment>
-    )
+    );
   }
 }

@@ -1,18 +1,19 @@
 import {code} from "../widgets/editor/exampleCode";
 import {newId} from "../utils/common";
 import {first} from "lodash";
+import { createModel } from "@rematch/core";
 
 export interface State {
-  projects: { [key: number]: any }
-  compileOutput: any
-  activeProject: number
-  activeFile: string
-  latestContract: string
-  deployedContracts: any[],
+  projects: { [key: number]: any };
+  compileOutput: any;
+  activeProject: number;
+  activeFile: string;
+  latestContract: string;
+  deployedContracts: any[];
   panels: { [key: string]: boolean };
 }
 
-export const ide: { state: State, reducers: any, selectors: any } = {
+export const ide = createModel<State>({
   state: {
     projects: {
       1: {
@@ -61,7 +62,7 @@ export const ide: { state: State, reducers: any, selectors: any } = {
       const id = newId();
 
       if (!project) {
-        project = state.activeProject
+        project = state.activeProject;
       }
 
       return {
@@ -86,7 +87,7 @@ export const ide: { state: State, reducers: any, selectors: any } = {
     removeFile(state: State, { project = null, file }) {
 
       if (!project) {
-        project = state.activeProject
+        project = state.activeProject;
       }
 
       const { [file]: remove, ...newFiles } = state.projects[project].files;
@@ -120,13 +121,13 @@ export const ide: { state: State, reducers: any, selectors: any } = {
       return {
         ...state,
         activeFile: file,
-      }
+      };
     },
     setLatestContract(state: State, contract) {
       return {
         ...state,
         latestContract: contract,
-      }
+      };
     },
     changeProjectName(state: State, { id, name }) {
       return {
@@ -138,14 +139,14 @@ export const ide: { state: State, reducers: any, selectors: any } = {
             name,
           }
         }
-      }
+      };
     },
     setActiveProject(state: State, project) {
       return {
         ...state,
         activeProject: project,
         activeFile: first(Object.keys(state.projects[project].files || {})),
-      }
+      };
     },
     addProject(state: State, project) {
       return {
@@ -158,19 +159,19 @@ export const ide: { state: State, reducers: any, selectors: any } = {
             ...project,
           },
         },
-      }
+      };
     },
     setCompileOutput(state: State, output) {
       return {
         ...state,
         compileOutput: output,
-      }
+      };
     },
     setDeployedContracts(state: State, contracts) {
       return {
         ...state,
         deployedContracts: contracts || [],
-      }
+      };
     },
     setPanelVisibility(state: State, { panel, visible }) {
       return {
@@ -198,9 +199,8 @@ export const ide: { state: State, reducers: any, selectors: any } = {
     },
     activeFileExtension() {
       return (state) => {
-        return ((state.ide.projects[state.ide.activeProject] || { files: {} }).files[state.ide.activeFile] || {}).name
+        return ((state.ide.projects[state.ide.activeProject] || { files: {} }).files[state.ide.activeFile] || {}).name;
       };
     },
   })
-};
-
+});

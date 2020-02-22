@@ -35,7 +35,7 @@ export class Function {
 
 export class Contract {
   public name: string;
-  public functions: Function[] = [];
+  public functions: any[] = [];
   public events: Event[] = [];
 
   constructor(name: string) {
@@ -56,7 +56,7 @@ export class AstParser {
     switch (ast.type) {
       case "SourceUnit":
         const source = new Source();
-        for (let child of ast.children) {
+        for (const child of ast.children) {
           this.parseAst(child, source);
         }
         return source;
@@ -64,7 +64,7 @@ export class AstParser {
       case "ContractDefinition": {
         const contract = new Contract(ast.name);
         parent.contracts.push(contract);
-        for (let child of ast.subNodes) {
+        for (const child of ast.subNodes) {
           this.parseAst(child, contract);
         }
         break;
@@ -82,7 +82,7 @@ export class AstParser {
         func.visibility = ast.visibility;
         parent.functions.push(func);
         if (ast.body && ast.body.statements) {
-          for (let statement of ast.body.statements) {
+          for (const statement of ast.body.statements) {
             this.parseAst(statement, func);
           }
         }

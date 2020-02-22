@@ -1,7 +1,7 @@
 import * as React from "react";
 import {withRouter} from "react-router";
 
-import {Hotkey, Hotkeys, HotkeysTarget, MenuItem,} from "@blueprintjs/core";
+import {Hotkey, Hotkeys, HotkeysTarget, MenuItem, } from "@blueprintjs/core";
 import {ItemRenderer, Omnibar} from "@blueprintjs/select";
 import {IAction} from "./action";
 import {IActionHandler} from "./actions/actionHandler";
@@ -38,11 +38,12 @@ const renderItem: ItemRenderer<IAction> = (action, { handleClick, modifiers, que
 };
 
 @withRouter
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     isOpen: state.omnibar.isOpen,
   }),
-  ({ omnibar }) => ({
+  ({ omnibar }: any) => ({
     toggleOmnibar: omnibar.toggleOmnibar,
     setOmnibar: omnibar.setOmnibar,
   }),
@@ -97,20 +98,20 @@ export default class OmnibarWidget extends React.PureComponent<any, IOmnibarExam
       return items;
     }
 
-    for (let handler of this.handlers.concat(getOmnibarHooks())) {
+    for (const handler of this.handlers.concat(getOmnibarHooks())) {
       if (handler.canHandle(query, items)) {
         return handler.onItemsList(query, items);
       }
     }
 
-    for (let handler of this.handlers.concat(getOmnibarHooks())) {
+    for (const handler of this.handlers.concat(getOmnibarHooks())) {
       if (handler.canProvide(query, items)) {
         items = handler.onItemsList(query, items);
       }
     }
 
     return items;
-  };
+  }
 
   public render() {
     return (
@@ -129,9 +130,9 @@ export default class OmnibarWidget extends React.PureComponent<any, IOmnibarExam
     );
   }
 
-  private handleClick = (_event: React.MouseEvent<HTMLElement>) => {
+  private handleClick = (ev: React.MouseEvent<HTMLElement>) => {
     this.props.setOmnibar(true);
-  };
+  }
 
   private handleItemSelect = (film: IAction) => {
 
@@ -144,7 +145,7 @@ export default class OmnibarWidget extends React.PureComponent<any, IOmnibarExam
         history.push(url);
       }
     });
-  };
+  }
 
   private handleClose = () => this.props.setOmnibar(false);
 

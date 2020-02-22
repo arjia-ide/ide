@@ -3,16 +3,16 @@ import {connect} from "react-redux";
 import {Card, Classes, Dialog} from "@blueprintjs/core";
 import TransactionDetails from "../../components/transactionDetails";
 
-
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     projects: state.ide.projects,
     activeProject: state.ide.projects[state.ide.activeProject],
     files: state.ide.projects[state.ide.activeProject].files,
     activeFile: state.ide.activeFile,
     contractCalls: state.contractFunctions.contractCalls,
   }),
-  ({ ide, contractFunctions: { addContractCall } }) => ({
+  ({ ide, contractFunctions: { addContractCall } }: any) => ({
     updateFile: ide.updateFile,
     addFile: ide.addFile,
     addContractCall,
@@ -35,7 +35,7 @@ export default class ContractFunctionsLog extends React.Component<any, any> {
     this.setState({
       modal: null,
     });
-  };
+  }
 
   openTransaction = (id) => {
     this.setState({
@@ -54,7 +54,7 @@ export default class ContractFunctionsLog extends React.Component<any, any> {
         </Dialog>
       )
     });
-  };
+  }
 
   render() {
     const { contractCalls } = this.props;

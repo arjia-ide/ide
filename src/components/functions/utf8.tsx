@@ -54,7 +54,7 @@ export function Utf8Func() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 

@@ -13,19 +13,17 @@ const CodeEditorAsync = React.lazy(() => import('./codeEditor'));
   activeFileExtension: models.ide.activeFileExtension,
   activeFileCode: models.ide.activeFileCode,
 }))
+// @ts-ignore
 @connect(
-  state => {
-    return ({
-      projects: state.ide.projects,
-      activeProject: state.ide.projects[state.ide.activeProject],
-      files: state.ide.projects[state.ide.activeProject].files,
-      activeFile: state.ide.activeFile,
-      latestDeployedContract: state.ide.latestContract,
-
-      deployedContracts: state.ide.deployedContracts,
-    })
-  },
-  ({ ide, omnibar }) => ({
+  (state: any) => ({
+    projects: state.ide.projects,
+    activeProject: state.ide.projects[state.ide.activeProject],
+    files: state.ide.projects[state.ide.activeProject].files,
+    activeFile: state.ide.activeFile,
+    latestDeployedContract: state.ide.latestContract,
+    deployedContracts: state.ide.deployedContracts,
+  }),
+  ({ ide, omnibar }: any) => ({
     updateFile: ide.updateFile,
     addFile: ide.addFile,
     toggleOmnibar: omnibar.toggleOmnibar,
@@ -34,14 +32,14 @@ const CodeEditorAsync = React.lazy(() => import('./codeEditor'));
 )
 export default class Editor extends React.Component<any, any> {
 
-  private monaco: any;
-  private editor: any;
-
   public state = {
     language: 'sol',
     codeRunning: false,
     modal: null,
   };
+
+  private monaco: any;
+  private editor: any;
 
   getEditorRange = (contents, start, end) => {
 
@@ -77,7 +75,7 @@ export default class Editor extends React.Component<any, any> {
       startPos,
       endPos
     };
-  };
+  }
 
   componentDidUpdate(prevProps: Readonly<any>): void {
 
@@ -115,31 +113,32 @@ export default class Editor extends React.Component<any, any> {
     this.monaco = monaco;
     this.editor = editor;
 
-    this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_O, function(ev) {
+    this.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_O, (ev) => {
       setOmnibar(true);
       ev.preventDefault();
     });
-    editor.focus();
-  };
 
-  onChange = (newValue, e) => {
+    editor.focus();
+  }
+
+  onChange = (contents, e) => {
     const {activeProject, activeFile, updateFile} = this.props;
 
     updateFile({
       project: activeProject.id,
       file: activeFile,
       data: {
-        contents: newValue
-      }
+        contents,
+      },
     });
-  };
+  }
 
   verify = async () => {
 
     const linter = await import('solhint/lib/index');
 
     const report = linter.processStr(this.getCode(), {
-      'extends': 'default',
+      extends: 'default',
       rules: {
         'indent': false,
         'payable-fallback': false,
@@ -157,7 +156,7 @@ export default class Editor extends React.Component<any, any> {
     }));
 
     this.monaco.editor.setModelMarkers(this.editor.getModel(), 'solhint', markers);
-  };
+  }
 
   getLanguage = (filename) => {
     if (!this.monaco || !filename) {
@@ -173,7 +172,7 @@ export default class Editor extends React.Component<any, any> {
     }
 
     return 'sol';
-  };
+  }
 
   runJavascript = async () => {
 
@@ -187,9 +186,9 @@ export default class Editor extends React.Component<any, any> {
       const log = (message) => messages.push(message);
       const tronWeb = this.props.getTronWeb();
 
-      let contracts = {};
+      const contracts = {};
 
-      for (let contract of deployedContracts) {
+      for (const contract of deployedContracts) {
         contracts[contract.name] = contract.address;
       }
 
@@ -217,11 +216,11 @@ export default class Editor extends React.Component<any, any> {
     } finally {
       this.setState({codeRunning: false});
     }
-  };
+  }
 
   getCode = () => {
     return this.getCurrentFile().contents;
-  };
+  }
 
   renderFileTypeBar() {
 
@@ -294,7 +293,7 @@ export default class Editor extends React.Component<any, any> {
                 onChange={this.onChange}
                 editorDidMount={this.editorDidMount}
               />
-            </React.Suspense>:
+            </React.Suspense> :
             <NonIdealState
               icon="code"
               title="Please select a file"

@@ -1,5 +1,10 @@
+import { createModel } from "@rematch/core";
 
-export const favorites = {
+interface FavoritesState {
+  addresses: { [key: string]: string };
+}
+
+export const favorites = createModel<FavoritesState>({
   state: {
     addresses: {},
   },
@@ -15,8 +20,8 @@ export const favorites = {
         }
       };
     },
-    deleteFavoriteAddress(state, address) {
-      const {[address]: remove, ...newList} = state.addresses;
+    deleteFavoriteAddress(state, address: string) {
+      const { [address]: remove, ...newList } = state.addresses;
 
       return {
         ...state,
@@ -24,4 +29,4 @@ export const favorites = {
       };
     },
   },
-};
+});

@@ -13,12 +13,13 @@ import {copyWithConfirmation} from "../utils/clipboard";
 @withDialogs
 @withNetwork
 @withWallet
+// @ts-ignore
 @connect(
-  state => ({
+  (state: any) => ({
     activeWalletData: activeWalletDataSelector(state),
   }),
 
-  ({ config: { setWalletName, deleteWallet, }, wallet: { reloadWallet } }) => ({
+  ({ config: { setWalletName, deleteWallet, }, wallet: { reloadWallet } }: any) => ({
     setWalletName,
     deleteWallet,
     reloadWalletAddress: reloadWallet,
@@ -42,7 +43,7 @@ export default class WalletMenu extends React.Component<any, any> {
 
     this.props.setActiveWallet(wallet.address);
     this.props.reloadWalletAddress(wallet.address);
-  };
+  }
 
   addTestNetWallet = async () => {
 
@@ -60,12 +61,12 @@ export default class WalletMenu extends React.Component<any, any> {
 
     await prepareTestNetWallet(wallet.address);
     this.props.reloadWalletAddress(wallet.address);
-  };
+  }
 
   requestTestNetTrx = async () => {
     await prepareTestNetWallet(this.props.wallet.address);
     this.props.reloadWalletAddress(this.props.wallet.address);
-  };
+  }
 
   import = async () => {
 
@@ -81,7 +82,7 @@ export default class WalletMenu extends React.Component<any, any> {
 
     this.props.setActiveWallet(wallet.address);
     this.props.reloadWalletAddress(wallet.address);
-  };
+  }
 
   changeWalletName = async () => {
     const {wallet} = this.props;
@@ -91,7 +92,7 @@ export default class WalletMenu extends React.Component<any, any> {
       wallet: wallet.address,
       name: newName
     });
-  };
+  }
 
 
   deleteWallet = async (wallet) => {
@@ -106,7 +107,7 @@ export default class WalletMenu extends React.Component<any, any> {
     })) {
       this.props.deleteWallet(wallet.address);
     }
-  };
+  }
 
 
   isExtension = () => this.props.network.id === 'extension';

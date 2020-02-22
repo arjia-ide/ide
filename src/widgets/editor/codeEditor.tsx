@@ -6,6 +6,6 @@ export default class CodeEditor extends React.Component<any, any> {
   render() {
     return (
       <MonacoEditor {...this.props} />
-    )
+    );
   }
 }
